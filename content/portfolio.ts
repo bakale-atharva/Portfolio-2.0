@@ -46,6 +46,13 @@ export interface SocialLink {
   url: string;
 }
 
+export interface SeoMetadata {
+  title: string;
+  description: string;
+  canonicalUrl: string;
+  ogImage: string;
+}
+
 export interface PortfolioContent {
   profile: Profile;
   metrics: Metric[];
@@ -53,6 +60,7 @@ export interface PortfolioContent {
   services: Service[];
   skillGroups: SkillGroup[];
   socialLinks: SocialLink[];
+  seo: SeoMetadata;
 }
 
 export const portfolioContent: PortfolioContent = {
@@ -209,4 +217,12 @@ export const portfolioContent: PortfolioContent = {
       url: "mailto:contact@atharva.dev",
     },
   ],
+
+  seo: {
+    title: "Atharva Bakale — Lead Creative Technologist & Full-Stack Architect",
+    description:
+      "Portfolio of Atharva Bakale, creative technologist specializing in Next.js, React performance, design systems, and modern web architecture.",
+    canonicalUrl: "https://atharva.dev",
+    ogImage: "/og-image.png",
+  },
 };

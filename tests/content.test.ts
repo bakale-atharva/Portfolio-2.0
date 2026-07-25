@@ -1,6 +1,35 @@
-import { portfolioContent } from "../content/portfolio";
+import {
+  portfolioContent,
+  type PortfolioContent,
+  type Profile,
+  type Metric,
+  type Project,
+  type SkillGroup,
+  type Service,
+  type SocialLink,
+  type SeoMetadata,
+} from "../content/portfolio";
 
 describe("Portfolio Content Data Contract", () => {
+  it("should export all required interfaces and valid root portfolio object", () => {
+    const content: PortfolioContent = portfolioContent;
+    const profile: Profile = content.profile;
+    const metrics: Metric[] = content.metrics;
+    const projects: Project[] = content.projects;
+    const services: Service[] = content.services;
+    const skillGroups: SkillGroup[] = content.skillGroups;
+    const socialLinks: SocialLink[] = content.socialLinks;
+    const seo: SeoMetadata = content.seo;
+
+    expect(profile).toBeDefined();
+    expect(metrics).toBeDefined();
+    expect(projects).toBeDefined();
+    expect(services).toBeDefined();
+    expect(skillGroups).toBeDefined();
+    expect(socialLinks).toBeDefined();
+    expect(seo).toBeDefined();
+  });
+
   it("should contain complete and valid profile information", () => {
     const { profile } = portfolioContent;
     expect(profile).toBeDefined();
@@ -100,5 +129,16 @@ describe("Portfolio Content Data Contract", () => {
       expect(link.name).toBeTruthy();
       expect(link.url).toBeTruthy();
     });
+  });
+
+  it("should contain complete and valid SEO metadata", () => {
+    const { seo } = portfolioContent;
+    expect(seo).toBeDefined();
+    expect(seo.title).toBe("Atharva Bakale — Lead Creative Technologist & Full-Stack Architect");
+    expect(seo.description).toBe(
+      "Portfolio of Atharva Bakale, creative technologist specializing in Next.js, React performance, design systems, and modern web architecture."
+    );
+    expect(seo.canonicalUrl).toBe("https://atharva.dev");
+    expect(seo.ogImage).toBe("/og-image.png");
   });
 });
