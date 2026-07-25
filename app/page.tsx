@@ -1,25 +1,31 @@
+import { portfolioContent } from '@/content/portfolio';
+import { Header } from '@/components/portfolio/Header';
+import { Hero } from '@/components/portfolio/Hero';
+import { ProofRail } from '@/components/portfolio/ProofRail';
+import { Projects } from '@/components/portfolio/Projects';
+import { Services } from '@/components/portfolio/Services';
+import { Skills } from '@/components/portfolio/Skills';
+import { About } from '@/components/portfolio/About';
+import { Contact } from '@/components/portfolio/Contact';
+import { Footer } from '@/components/portfolio/Footer';
+
 export default function Home() {
+  const { profile, metrics, projects, services, skillGroups, socialLinks } =
+    portfolioContent;
+
   return (
-    <div className="min-h-screen flex flex-col justify-between">
-      <header className="p-6 border-b border-neutral-200">
-        <h1 className="text-xl font-bold tracking-tight">Editorial Circuit</h1>
-      </header>
-
-      <main className="flex-grow p-6 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <span className="inline-block px-3 py-1 text-xs font-mono bg-[var(--accent-lime)] text-[var(--text-primary)] rounded-full">
-            Phase 1 Baseline
-          </span>
-          <h2 className="text-4xl font-extrabold tracking-tight">Portfolio Engine</h2>
-          <p className="text-[var(--text-muted)] max-w-md mx-auto">
-            Runnable Next.js baseline with Tailwind CSS v4, Vitest unit testing, and Playwright e2e setup.
-          </p>
-        </div>
+    <div className="min-h-screen flex flex-col bg-paper text-ink">
+      <Header profile={profile} />
+      <main id="top" className="flex-grow">
+        <Hero profile={profile} />
+        <ProofRail metrics={metrics} />
+        <Projects projects={projects} />
+        <Services services={services} />
+        <Skills skillGroups={skillGroups} />
+        <About profile={profile} />
+        <Contact profile={profile} socialLinks={socialLinks} />
       </main>
-
-      <footer className="p-6 border-t border-neutral-200 text-sm text-[var(--text-muted)] text-center">
-        &copy; {new Date().getFullYear()} Editorial Circuit. All rights reserved.
-      </footer>
+      <Footer profile={profile} />
     </div>
   );
 }

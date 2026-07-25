@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <pattern id="grid4" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="500" fill="#11110F"/>
+  <rect width="800" height="500" fill="url(#grid4)"/>
+
+  <!-- Outer Frame -->
+  <rect x="40" y="40" width="720" height="420" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+
+  <!-- Header Bar -->
+  <line x1="40" y1="80" x2="760" y2="80" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <circle cx="65" cy="60" r="4" fill="#C7FF3D"/>
+  <text x="80" y="64" fill="#F3F0E8" font-family="monospace" font-size="12" letter-spacing="1">PROJECT [04] — VORTEX SHADER VISUALIZER</text>
+  <text x="680" y="64" fill="#C7FF3D" font-family="monospace" font-size="11" text-anchor="end">WEBGL &amp; CUSTOM GLSL</text>
+
+  <!-- 3D Shader Wireframe Visualization (Left Panel) -->
+  <g transform="translate(80, 110)">
+    <rect width="360" height="310" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+    <!-- Concentric 3D Geometric Rings / Wireframe Torus -->
+    <ellipse cx="180" cy="155" rx="140" ry="70" fill="none" stroke="#C7FF3D" stroke-width="1.5"/>
+    <ellipse cx="180" cy="155" rx="110" ry="55" fill="none" stroke="#F3F0E8" stroke-width="1" stroke-dasharray="6 3"/>
+    <ellipse cx="180" cy="155" rx="80" ry="40" fill="none" stroke="#C7FF3D" stroke-width="1"/>
+    <ellipse cx="180" cy="155" rx="50" ry="25" fill="none" stroke="#66655F" stroke-width="1"/>
+
+    <!-- Axis Vectors & Cross Sections -->
+    <line x1="180" y1="35" x2="180" y2="275" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="2 2"/>
+    <line x1="40" y1="155" x2="320" y2="155" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="2 2"/>
+    
+    <!-- Rotating Vortex Node Pins -->
+    <circle cx="290" cy="120" r="5" fill="#C7FF3D"/>
+    <line x1="180" y1="155" x2="290" y2="120" stroke="#C7FF3D" stroke-width="1"/>
+    
+    <circle cx="100" cy="180" r="4" fill="#F3F0E8"/>
+    <line x1="180" y1="155" x2="100" y2="180" stroke="#F3F0E8" stroke-width="1"/>
+
+    <text x="15" y="295" fill="#C7FF3D" font-family="monospace" font-size="10">[SHADING_PASS: FRAGMENT_RAYMARCH]</text>
+  </g>
+
+  <!-- GLSL Code Snippet Panel (Right Panel) -->
+  <g transform="translate(460, 110)">
+    <rect width="260" height="310" fill="#171715" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    
+    <!-- Code Header Bar -->
+    <rect width="260" height="30" fill="rgba(255,255,255,0.05)"/>
+    <text x="15" y="20" fill="#66655F" font-family="monospace" font-size="10">vortex_fragment.glsl</text>
+
+    <!-- Code Text -->
+    <text x="15" y="55" fill="#66655F" font-family="monospace" font-size="11">precision highp float;</text>
+    <text x="15" y="75" fill="#C7FF3D" font-family="monospace" font-size="11">uniform float u_time;</text>
+    <text x="15" y="95" fill="#C7FF3D" font-family="monospace" font-size="11">uniform vec2 u_res;</text>
+    <text x="15" y="125" fill="#F3F0E8" font-family="monospace" font-size="11">void main() {</text>
+    <text x="30" y="145" fill="#F3F0E8" font-family="monospace" font-size="11">vec2 st = gl_FragCoord.xy</text>
+    <text x="60" y="165" fill="#F3F0E8" font-family="monospace" font-size="11">/ u_res.xy;</text>
+    <text x="30" y="195" fill="#66655F" font-family="monospace" font-size="11">// Spiral Distortion</text>
+    <text x="30" y="215" fill="#C7FF3D" font-family="monospace" font-size="11">float r = length(st);</text>
+    <text x="30" y="235" fill="#C7FF3D" font-family="monospace" font-size="11">float a = atan(st.y, st.x);</text>
+    <text x="30" y="255" fill="#F3F0E8" font-family="monospace" font-size="11">gl_FragColor = vec4(...);</text>
+    <text x="15" y="280" fill="#F3F0E8" font-family="monospace" font-size="11">}</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="40" y="480" fill="#66655F" font-family="monospace" font-size="10">INTERACTIVE 3D SHADER VISUALIZER</text>
+  <text x="760" y="480" fill="#66655F" font-family="monospace" font-size="10" text-anchor="end">WEBGL / THREE.JS / TYPESCRIPT / GLSL</text>
+</svg>
