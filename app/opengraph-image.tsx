@@ -1,8 +1,9 @@
 import { ImageResponse } from 'next/og';
+import { portfolioContent } from '@/content/portfolio';
 
 export const runtime = 'edge';
 
-export const alt = 'Atharva Bakale — Creative Technologist & Full-Stack Architect';
+export const alt = portfolioContent.seo.title;
 export const size = {
   width: 1200,
   height: 630,
@@ -49,7 +50,7 @@ export default async function Image() {
                 background: '#C7FF3D',
               }}
             />
-            AB // EDITORIAL CIRCUIT
+            {`${portfolioContent.profile.monogram} // EDITORIAL CIRCUIT`}
           </div>
           <div
             style={{
@@ -59,19 +60,19 @@ export default async function Image() {
               fontWeight: 600,
             }}
           >
-            AVAILABLE FOR Q3/Q4
+            {portfolioContent.profile.availability.toUpperCase()}
           </div>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ fontSize: '56px', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-1px' }}>
-            Atharva Bakale
+            {portfolioContent.profile.name}
           </div>
           <div style={{ fontSize: '28px', color: '#66655F', maxWidth: '800px' }}>
-            Creative Technologist & Full-Stack Architect
+            {portfolioContent.profile.role}
           </div>
           <div style={{ fontSize: '22px', color: '#C7FF3D', marginTop: '12px' }}>
-            I build expressive digital experiences & high-performance design systems.
+            {portfolioContent.profile.tagline}
           </div>
         </div>
 
@@ -86,7 +87,7 @@ export default async function Image() {
             color: '#66655F',
           }}
         >
-          <div>MUMBAI, IN / REMOTE WORLDWIDE</div>
+          <div>{portfolioContent.profile.location.toUpperCase()}</div>
           <div>NEXT.JS 16 • TAILWIND V4 • TYPESCRIPT</div>
         </div>
       </div>
@@ -96,3 +97,4 @@ export default async function Image() {
     }
   );
 }
+

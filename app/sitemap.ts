@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
+import { portfolioContent } from '@/content/portfolio';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://editorial-circuit.demo';
+  const baseUrl = portfolioContent.seo.canonicalUrl;
 
   return [
     {
@@ -12,3 +13,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 }
+

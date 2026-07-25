@@ -8,13 +8,13 @@ interface SkillsTickerProps {
   className?: string;
 }
 
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export function SkillsTicker({ skills, className = '' }: SkillsTickerProps) {
   const shouldReduceMotion = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   if (mounted && shouldReduceMotion) {
     return (
