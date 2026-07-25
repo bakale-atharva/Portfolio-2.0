@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 
 interface SkillsTickerProps {
@@ -10,8 +10,13 @@ interface SkillsTickerProps {
 
 export function SkillsTicker({ skills, className = '' }: SkillsTickerProps) {
   const shouldReduceMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
 
-  if (shouldReduceMotion) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (mounted && shouldReduceMotion) {
     return (
       <div className={`py-6 overflow-hidden border-y border-hairline bg-ink text-paper ${className}`}>
         <div className="flex flex-wrap justify-center gap-3 px-4 max-w-7xl mx-auto">

@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { Metric } from '@/content/portfolio';
 import { Reveal } from '@/components/motion/Reveal';

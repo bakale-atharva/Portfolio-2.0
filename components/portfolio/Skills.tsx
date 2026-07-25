@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { SkillGroup } from '@/content/portfolio';
 import { Reveal } from '@/components/motion/Reveal';

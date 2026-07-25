@@ -58,7 +58,7 @@ export function Header({ profile }: HeaderProps) {
             href="#contact"
             className="inline-flex items-center gap-2 bg-ink text-paper hover:bg-ink/90 font-mono text-xs font-medium uppercase px-5 py-3 rounded-full transition-transform active:scale-95 touch-target"
           >
-            <span>Let&apos;s work</span>
+            <span className="font-white">Let&apos;s work</span>
             <ArrowUpRight className="w-4 h-4 text-lime" />
           </a>
         </div>

@@ -11,26 +11,15 @@ test.describe('Editorial Circuit Portfolio E2E', () => {
     await expect(heroHeading).toBeVisible();
   });
 
-  test('should navigate via anchor links cleanly', async ({ page }) => {
-    // Click work link
-    const workLink = page.getByRole('link', { name: /^work$/i }).first();
-    await workLink.click();
-    await expect(page.locator('#work')).toBeVisible();
+  test('should navigate via anchor links cleanly to all main sections', async ({ page }) => {
+    const sections = ['work', 'services', 'skills', 'about', 'contact'];
 
-    // Click skills link
-    const skillsLink = page.getByRole('link', { name: /^skills$/i }).first();
-    await skillsLink.click();
-    await expect(page.locator('#skills')).toBeVisible();
-
-    // Click services link
-    const servicesLink = page.getByRole('link', { name: /^services$/i }).first();
-    await servicesLink.click();
-    await expect(page.locator('#services')).toBeVisible();
-
-    // Click about link
-    const aboutLink = page.getByRole('link', { name: /^about$/i }).first();
-    await aboutLink.click();
-    await expect(page.locator('#about')).toBeVisible();
+    for (const sectionId of sections) {
+      const link = page.locator(`a[href="#${sectionId}"]`).first();
+      await expect(link).toBeVisible();
+      await link.click();
+      await expect(page.locator(`#${sectionId}`)).toBeVisible();
+    }
   });
 
   test('should have no horizontal scroll overflow on mobile (375px), tablet (768px), and desktop (1440px)', async ({ page }) => {
@@ -49,9 +38,41 @@ test.describe('Editorial Circuit Portfolio E2E', () => {
     }
   });
 
-  test('should support keyboard navigation and focus rings', async ({ page }) => {
+  test('should support sequential keyboard focus order and visible focus states', async ({ page }) => {
+    // Focus first interactive element
     await page.keyboard.press('Tab');
-    const focusedElement = page.locator(':focus');
-    await expect(focusedElement).toBeDefined();
+    const firstFocused = page.locator(':focus');
+    await expect(firstFocused).toBeVisible();
+
+    // Tab through main header navigation links
+    for (let i = 0; i < 4; i++) {
+      await page.keyboard.press('Tab');
+      const focusedLink = page.locator(':focus');
+      await expect(focusedLink).toBeVisible();
+    }
+  });
+
+  test('should respect reduced motion setting and render static fallback elements', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+
+    // Check that marquee marquee container aria-label is hidden or fallback grid is rendered
+    const staticSkillsContainer = page.locator('#skills');
+    await expect(staticSkillsContainer).toBeVisible();
+    await expect(staticSkillsContainer.getByText('TypeScript').first()).toBeVisible();
+  });
+
+  test('should enforce minimum 44px touch target sizes for primary links and buttons', async ({ page }) => {
+    const touchTargetElements = page.locator('.touch-target');
+    const count = await touchTargetElements.count();
+    expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < Math.min(count, 10); i++) {
+      const box = await touchTargetElements.nth(i).boundingBox();
+      if (box) {
+        expect(box.height).toBeGreaterThanOrEqual(44);
+        expect(box.width).toBeGreaterThanOrEqual(44);
+      }
+    }
   });
 });

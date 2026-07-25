@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { Project } from '@/content/portfolio';
 import { ProjectCard } from './ProjectCard';

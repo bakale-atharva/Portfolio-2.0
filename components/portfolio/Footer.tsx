@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { Profile } from '@/content/portfolio';
 import { ArrowUp } from 'lucide-react';
