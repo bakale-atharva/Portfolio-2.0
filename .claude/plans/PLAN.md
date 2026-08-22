@@ -101,8 +101,8 @@ A lime link back to `/`, and a sign-out button.
 
 ### Security — three layers, and the third is the real one
 
-1. `proxy.ts` runs `clerkMiddleware` over `/dashboard(.*)` (**Next.js 16 renames `middleware.ts` → `proxy.ts`** for Clerk — this is the easy thing to get wrong).
-2. The server component compares your Clerk primary email against `OWNER_EMAIL` and picks one of the three screens.
+1. `proxy.ts` runs **bare `clerkMiddleware()`** plus a `config.matcher` export. It establishes the auth context and nothing more — no route matching, no protection. (Two naming traps here: **Next.js 16 renames `middleware.ts` → `proxy.ts`**, and **`createRouteMatcher` is deprecated** — Clerk now wants protection on the resource, not in middleware.)
+2. The `/dashboard` server component calls `await auth()`, compares your Clerk primary email against `OWNER_EMAIL`, and picks one of the three screens. This *is* the resource-based model Clerk migrated to. Note we deliberately do **not** use `auth.protect()` here — it redirects signed-out users and 404s unauthorized ones, which would destroy both the custom sign-in screen and the easter egg. We branch on `auth()` manually instead.
 3. **Every Convex mutation calls `assertOwner(ctx)`**, which checks `ctx.auth.getUserIdentity()` against Convex's own `OWNER_EMAIL` env var.
 
 Layers 1–2 are UX. Layer 3 is security: without it, any signed-in stranger could call your mutations directly from the browser console. Non-negotiable.
@@ -120,11 +120,12 @@ app/
     page.tsx                    RSC — three-state gate
     _components/                editor forms, reorder, uploads
   actions.ts                    revalidatePortfolio() server action
-proxy.ts                        Clerk matcher (NOT middleware.ts — Next 16)
+proxy.ts                        bare clerkMiddleware() + config.matcher
+                                (NOT middleware.ts — Next 16)
 convex/
   schema.ts                     profile, metrics, projects, services,
                                 skillGroups, socialLinks, seo, siteSettings
-  auth.config.ts                Clerk JWT issuer, applicationID "convex"
+  auth.config.ts                CLERK_FRONTEND_API_URL, applicationID "convex"
   portfolio.ts                  queries (public) + mutations (owner-gated)
   files.ts                      generateUploadUrl, resolve storage URLs
   lib/owner.ts                  assertOwner(ctx)
@@ -177,10 +178,21 @@ No visual change. Everything below depends on this being correct.
 ### Phase 2 — Clerk and the gate
 
 - `pnpm add @clerk/nextjs`; `clerk init --framework next -y` writes dev keys to `.env.local` with no account needed.
-- Create a Clerk **JWT template named `convex`**; point `convex/auth.config.ts` at `CLERK_JWT_ISSUER_DOMAIN`.
-- `proxy.ts` with `clerkMiddleware` + `createRouteMatcher(['/dashboard(.*)'])`.
+- In the Clerk Dashboard, **activate the Convex integration** and copy the revealed **Frontend API URL** (dev: `https://verb-noun-00.clerk.accounts.dev`, prod: `https://clerk.<your-domain>.com`). *No JWT template* — the integration uses Clerk's default session token now.
+- `convex/auth.config.ts`:
+  ```ts
+  import type { AuthConfig } from 'convex/server'
+  export default {
+    providers: [{ domain: process.env.CLERK_FRONTEND_API_URL!, applicationID: 'convex' }],
+  } satisfies AuthConfig
+  ```
+  Set it on the **Convex** side, not in `.env.local` — Convex functions don't read local env files:
+  ```
+  npx convex env set CLERK_FRONTEND_API_URL https://<your-fapi-url>
+  ```
+- `proxy.ts` — bare `clerkMiddleware()` and a `config.matcher` export. **No `createRouteMatcher`, no `auth.protect()`**; matcher skips Next internals and static files, always runs for `/(api|trpc)(.*)` and `/__clerk/(.*)`.
 - `app/dashboard/layout.tsx` — `ClerkProvider` **inside `<body>`** wrapping `ConvexProviderWithClerk` (client boundary is scoped to `/dashboard` only, so `/` ships zero auth JS).
-- Build the three gate screens. Add `OWNER_EMAIL` to both `.env.local` and Convex env.
+- Build the three gate screens, branching on `await auth()` in the page. Add `OWNER_EMAIL` to `.env.local` **and** to Convex (`npx convex env set OWNER_EMAIL …`).
 - Add `assertOwner(ctx)` and apply it to **every** mutation.
 
 **Verify:** signed out → sign-in screen; signed in as a throwaway account → easter egg; signed in as you → editor shell. Then, signed in as the throwaway, call a mutation from the console and confirm it throws.
@@ -238,9 +250,20 @@ Already verified against live docs during planning:
 - `ConvexProviderWithClerk` must be wrapped by a configured `ClerkProvider` and passed Clerk's `useAuth` hook, and must live in a Client Component — hence the `/dashboard`-scoped client boundary.
 - `ClerkProvider` goes **inside `<body>`** in current Clerk SDKs (it could wrap `<html>` only in Core 2).
 
+### Deprecations to avoid (verified — these are the traps)
+
+| Don't use | Use instead | Why |
+|---|---|---|
+| `CLERK_JWT_ISSUER_DOMAIN` | `CLERK_FRONTEND_API_URL` | Renamed. Clerk's own `convex-configure-auth` partial now uses the Frontend API URL. Convex's docs still show the old name — they're behind. |
+| A `convex` JWT template | Clerk Dashboard → **activate Convex integration** | `getToken()` with no `template` returns the default session token, which the Convex integration now uses. The template step is obsolete. |
+| `createRouteMatcher(...)` in middleware | `await auth()` / `auth.protect()` **in the resource** | Deprecated; logs a one-time dev warning and is removed in the next major of `@clerk/nextjs`. See Clerk's `migrate-from-create-route-matcher` guide. |
+| `middleware.ts` | `proxy.ts` | Next.js 16 convention rename. |
+
+Everything else about `clerkMiddleware()` — including the `config.matcher` export — stays exactly as it was.
+
 ## Things you'll need to do yourself
 
-- Create the **Clerk JWT template named `convex`** in the Clerk dashboard (one form, ~30 seconds) — the CLI can't do this one.
+- In the **Clerk Dashboard**, activate the **Convex integration** and copy the **Frontend API URL** (~30 seconds; the CLI can't do this one). This replaces the old "create a JWT template named `convex`" step, which no longer exists.
 - Provide the **production domain** — `content/portfolio.ts` currently claims `https://atharva.dev`; confirm or replace.
 - Supply the **résumé PDF** (uploadable through the dashboard once Phase 3 lands).
 

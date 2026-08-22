@@ -11,6 +11,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.8.0",
+    "convex": "1.45.0",
     "lucide-react": "1.26.0",
     "motion": "12.42.2",
     "next": "16.2.11",
