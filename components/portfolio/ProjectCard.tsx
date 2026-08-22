@@ -46,10 +46,10 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               className="object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
             />
-          </div>
-          {/* Accent number overlay on image */}
-          <div className="absolute top-4 left-4 font-mono text-xs font-bold text-slate/60 bg-paper/90 px-3.5 py-1.5 rounded-full border border-hairline">
-            PROJECT // {cardNumber}
+            {/* Accent number overlay on image */}
+            <div className="absolute top-3 left-3 z-10 font-mono text-xs font-bold text-ink bg-paper px-3.5 py-1.5 rounded-full border border-hairline shadow-md">
+              PROJECT // {cardNumber}
+            </div>
           </div>
         </div>
 

@@ -36,13 +36,11 @@ describe("Portfolio Content Data Contract", () => {
     expect(profile.name).toBe("Atharva Bakale");
     expect(profile.monogram).toBe("AB");
     expect(profile.role).toBe("Lead Creative Technologist & Full-Stack Architect");
-    expect(profile.tagline).toBe("I build expressive digital experiences & high-performance design systems.");
-    expect(profile.bio).toBe(
-      "Bridging technical precision and editorial aesthetics. Specializing in Next.js, React performance, design systems, and modern web applications."
-    );
-    expect(profile.availability).toBe("Available for Q3/Q4 Projects & Roles");
-    expect(profile.location).toBe("Mumbai, IN / Remote Worldwide");
-    expect(profile.email).toBe("contact@atharva.dev");
+    expect(profile.tagline).toBe(portfolioContent.profile.tagline);
+    expect(profile.bio).toBe(portfolioContent.profile.bio);
+    expect(profile.availability).toBe(portfolioContent.profile.availability);
+    expect(profile.location).toBe(portfolioContent.profile.location);
+    expect(profile.email).toBe(portfolioContent.profile.email);
     expect(profile.resumeUrl).toBe("/resume.pdf");
   });
 

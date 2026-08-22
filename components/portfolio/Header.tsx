@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Profile } from '@/content/portfolio';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { useState } from "react";
+import { Profile } from "@/content/portfolio";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 
 interface HeaderProps {
   profile: Profile;
@@ -12,10 +12,10 @@ export function Header({ profile }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: '// 01 WORK', href: '#work' },
-    { name: '// 02 SERVICES', href: '#services' },
-    { name: '// 03 SKILLS', href: '#skills' },
-    { name: '// 04 ABOUT', href: '#about' },
+    { name: "// 01 WORK", href: "#work" },
+    { name: "// 02 SERVICES", href: "#services" },
+    { name: "// 03 SKILLS", href: "#skills" },
+    { name: "// 04 ABOUT", href: "#about" },
   ];
 
   return (
@@ -32,7 +32,10 @@ export function Header({ profile }: HeaderProps) {
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
+        <nav
+          className="hidden md:flex items-center gap-8"
+          aria-label="Main Navigation"
+        >
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -71,14 +74,21 @@ export function Header({ profile }: HeaderProps) {
           aria-expanded={mobileMenuOpen}
           aria-label="Toggle navigation menu"
         >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {mobileMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
       </div>
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-hairline bg-paper px-4 pt-4 pb-6 space-y-4">
-          <nav className="flex flex-col space-y-3" aria-label="Mobile Navigation">
+          <nav
+            className="flex flex-col space-y-3"
+            aria-label="Mobile Navigation"
+          >
             {navLinks.map((link) => (
               <a
                 key={link.href}

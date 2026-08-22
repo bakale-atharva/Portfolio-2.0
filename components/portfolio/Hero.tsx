@@ -1,7 +1,11 @@
-import React from 'react';
-import { Profile } from '@/content/portfolio';
-import { Reveal } from '@/components/motion/Reveal';
-import { ArrowDownRight, Sparkles, MapPin, Radio, Terminal } from 'lucide-react';
+import { Profile } from "@/content/portfolio";
+import { Reveal } from "@/components/motion/Reveal";
+import {
+  ArrowDownRight,
+  Sparkles,
+  MapPin,
+  Terminal,
+} from "lucide-react";
 
 interface HeroProps {
   profile: Profile;
@@ -11,22 +15,19 @@ export function Hero({ profile }: HeroProps) {
   return (
     <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 border-b border-hairline bg-paper">
       {/* Background grid lines effect */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(to_right,rgba(17,17,15,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(17,17,15,0.08)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(to_right,rgba(17,17,15,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(17,17,15,0.08)_1px,transparent_1px)] bg-size-[4rem_4rem]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Headline & Bio */}
           <div className="lg:col-span-7 flex flex-col justify-between space-y-8">
-            <Reveal yOffset={20}>
-              <div className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase text-slate border border-hairline bg-white/60 px-3.5 py-1.5 rounded-full mb-6">
-                <Radio className="w-3.5 h-3.5 text-lime animate-pulse" />
-                <span>{"// EDITORIAL CIRCUIT SYSTEM"}</span>
-              </div>
-            </Reveal>
-
             <Reveal yOffset={30} delay={0.1}>
               <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold font-display text-ink leading-[1.02] tracking-tight uppercase">
-                I build <span className="underline decoration-lime decoration-4 underline-offset-4">expressive</span> digital experiences.
+                I build{" "}
+                <span className="underline decoration-lime decoration-4 underline-offset-4">
+                  expressive
+                </span>{" "}
+                digital experiences.
               </h1>
             </Reveal>
 
@@ -34,7 +35,7 @@ export function Hero({ profile }: HeroProps) {
               <p className="text-lg sm:text-xl text-slate font-display max-w-2xl leading-relaxed">
                 {profile.tagline}
               </p>
-              <p className="text-sm text-slate/80 font-mono mt-3 max-w-xl">
+              <p className="text-base sm:text-lg text-slate/80 font-display mt-3 max-w-xl leading-relaxed">
                 {profile.bio}
               </p>
             </Reveal>
@@ -108,14 +109,18 @@ export function Hero({ profile }: HeroProps) {
                   <div className="relative border border-dashed border-white/20 p-6 rounded-lg bg-black/40 space-y-3 font-mono text-xs">
                     <div className="flex justify-between items-center text-white/60">
                       <span>FRAMEWORK</span>
-                      <span className="text-paper font-semibold">NEXT.JS 16 + REACT</span>
+                      <span className="text-paper font-semibold">
+                        NEXT.JS 16 + REACT
+                      </span>
                     </div>
                     <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
                       <div className="bg-lime h-full w-4/5 rounded-full" />
                     </div>
                     <div className="flex justify-between items-center text-white/60 pt-2">
                       <span>DESIGN SYSTEM</span>
-                      <span className="text-paper font-semibold">EDITORIAL CIRCUIT</span>
+                      <span className="text-paper font-semibold">
+                        EDITORIAL CIRCUIT
+                      </span>
                     </div>
                     <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
                       <div className="bg-lime h-full w-full rounded-full" />
@@ -125,12 +130,20 @@ export function Hero({ profile }: HeroProps) {
                   {/* Tech status indicators */}
                   <div className="grid grid-cols-2 gap-3 font-mono text-xs">
                     <div className="border border-white/10 p-3 rounded-lg bg-white/5">
-                      <div className="text-white/40 text-[10px] uppercase">STATUS</div>
-                      <div className="text-lime font-bold mt-0.5">OPEN FOR Q3/Q4</div>
+                      <div className="text-white/40 text-[10px] uppercase">
+                        STATUS
+                      </div>
+                      <div className="text-lime font-bold mt-0.5">
+                        OPEN FOR Q3/Q4
+                      </div>
                     </div>
                     <div className="border border-white/10 p-3 rounded-lg bg-white/5">
-                      <div className="text-white/40 text-[10px] uppercase">LATENCY</div>
-                      <div className="text-paper font-bold mt-0.5">&lt; 10ms TARGET</div>
+                      <div className="text-white/40 text-[10px] uppercase">
+                        LATENCY
+                      </div>
+                      <div className="text-paper font-bold mt-0.5">
+                        &lt; 10ms TARGET
+                      </div>
                     </div>
                   </div>
                 </div>

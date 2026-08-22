@@ -68,11 +68,12 @@ export const portfolioContent: PortfolioContent = {
     name: "Atharva Bakale",
     monogram: "AB",
     role: "Lead Creative Technologist & Full-Stack Architect",
-    tagline: "I build expressive digital experiences & high-performance design systems.",
-    bio: "Bridging technical precision and editorial aesthetics. Specializing in Next.js, React performance, design systems, and modern web applications.",
-    availability: "Available for Q3/Q4 Projects & Roles",
-    location: "Mumbai, IN / Remote Worldwide",
-    email: "contact@atharva.dev",
+    tagline:
+      "I build expressive digital experiences - from websites to digital products.",
+    bio: "Full-stack developer passionate for building AI solutions tackling real world problems and adding value to the individuals and organizations I work with.",
+    availability: "Available",
+    location: "Pune, In",
+    email: "atharvabakale13@gmail.com",
     resumeUrl: "/resume.pdf",
   },
 
@@ -96,48 +97,16 @@ export const portfolioContent: PortfolioContent = {
 
   projects: [
     {
-      slug: "editorial-circuit",
-      title: "Editorial Circuit Studio",
-      summary: "High-contrast digital architecture studio template with kinetic typography and micro-interactions.",
-      role: "Lead Architect & Designer",
-      year: "2026",
-      technologies: ["Next.js 16", "Tailwind CSS v4", "Motion", "TypeScript"],
-      image: "/projects/project-1.svg",
-      liveUrl: "https://editorial-circuit.demo",
-      githubUrl: "https://github.com/bakale-atharva/Portfolio-2.0",
-    },
-    {
-      slug: "hypergrid-design-system",
-      title: "Hypergrid UI System",
-      summary: "Multi-brand design token pipeline and zero-runtime component engine for high-scale applications.",
-      role: "Design System Engineer",
-      year: "2025",
-      technologies: ["React", "TypeScript", "Tailwind CSS", "Storybook"],
-      image: "/projects/project-2.svg",
-      liveUrl: "https://hypergrid.demo",
-      githubUrl: null,
-    },
-    {
-      slug: "pulse-telemetry",
-      title: "Pulse Financial Dashboard",
-      summary: "Real-time market analytics platform with low-latency WebSockets and interactive canvas visualization.",
-      role: "Full-Stack Engineer",
-      year: "2025",
-      technologies: ["Next.js", "WebSockets", "Canvas API", "Tailwind CSS"],
-      image: "/projects/project-3.svg",
-      liveUrl: "https://pulsetelemetry.demo",
-      githubUrl: "https://github.com/bakale-atharva/pulse-telemetry",
-    },
-    {
-      slug: "vortex-canvas",
-      title: "Vortex Shader Visualizer",
-      summary: "Interactive 3D shader visualizer powered by WebGL and custom fragment shaders.",
-      role: "Creative Technologist",
+      slug: "ai-storyteller",
+      title: "AI Storyteller",
+      summary:
+        "An AI-powered web application that generates and narrates stories, built with Next.js and GPTScript.",
+      role: "Full-Stack Developer",
       year: "2024",
-      technologies: ["WebGL", "Three.js", "TypeScript", "GLSL"],
-      image: "/projects/project-4.svg",
-      liveUrl: "https://vortex-canvas.demo",
-      githubUrl: null,
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "GPTScript"],
+      image: "/projects/ai-storyteller.jpg",
+      liveUrl: "https://ai-storyteller-silk.vercel.app/",
+      githubUrl: "https://github.com/bakale-atharva/ai-storyteller",
     },
   ],
 
@@ -145,7 +114,8 @@ export const portfolioContent: PortfolioContent = {
     {
       id: "01",
       title: "Product Interfaces",
-      description: "End-to-end frontend architecture built for performance, accessibility, and high conversion.",
+      description:
+        "End-to-end frontend architecture built for performance, accessibility, and high conversion.",
       deliverables: [
         "React / Next.js Applications",
         "Fluid Motion & Animations",
@@ -157,7 +127,8 @@ export const portfolioContent: PortfolioContent = {
     {
       id: "02",
       title: "Full-Stack Web Builds",
-      description: "Scalable web platforms with modern server architecture, robust API design, and clean data flow.",
+      description:
+        "Scalable web platforms with modern server architecture, robust API design, and clean data flow.",
       deliverables: [
         "Full-Stack App Architecture",
         "API Integration & Edge Logic",
@@ -169,7 +140,8 @@ export const portfolioContent: PortfolioContent = {
     {
       id: "03",
       title: "Design Systems",
-      description: "Systematized UI component libraries and design tokens bridging Figma and production code.",
+      description:
+        "Systematized UI component libraries and design tokens bridging Figma and production code.",
       deliverables: [
         "Design Token Architecture",
         "Accessible Component Libraries",
@@ -183,19 +155,45 @@ export const portfolioContent: PortfolioContent = {
   skillGroups: [
     {
       category: "Frontend",
-      skills: ["Next.js", "React", "TypeScript", "Tailwind CSS v4", "Motion (Framer)", "HTML5 / Semantic UI"],
+      skills: [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS v4",
+        "Motion (Framer)",
+        "HTML5 / Semantic UI",
+      ],
     },
     {
       category: "Product",
-      skills: ["Design Systems", "UI/UX Architecture", "Wireframing", "Typography", "Micro-interactions"],
+      skills: [
+        "Design Systems",
+        "UI/UX Architecture",
+        "Wireframing",
+        "Typography",
+        "Micro-interactions",
+      ],
     },
     {
       category: "Backend & Edge",
-      skills: ["Node.js", "REST / GraphQL", "Edge Functions", "WebSockets", "Jest", "Playwright"],
+      skills: [
+        "Node.js",
+        "REST / GraphQL",
+        "Edge Functions",
+        "WebSockets",
+        "Jest",
+        "Playwright",
+      ],
     },
     {
       category: "Workflow",
-      skills: ["Git", "CI/CD Pipelines", "pnpm", "ESLint / Prettier", "Performance Auditing"],
+      skills: [
+        "Git",
+        "CI/CD Pipelines",
+        "pnpm",
+        "ESLint / Prettier",
+        "Performance Auditing",
+      ],
     },
   ],
 

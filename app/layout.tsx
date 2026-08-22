@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
-import { portfolioContent } from '@/content/portfolio';
-import './globals.css';
+import type { Metadata } from "next";
+import { portfolioContent } from "@/content/portfolio";
+import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(portfolioContent.seo.canonicalUrl),
@@ -17,8 +17,8 @@ export const metadata: Metadata = {
     description: portfolioContent.seo.description,
     url: portfolioContent.seo.canonicalUrl,
     siteName: `${portfolioContent.profile.name} — Editorial Circuit`,
-    locale: 'en_US',
-    type: 'website',
+    locale: "en_US",
+    type: "website",
     images: [
       {
         url: portfolioContent.seo.ogImage,
@@ -29,13 +29,13 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     title: portfolioContent.seo.title,
     description: portfolioContent.seo.description,
     images: [portfolioContent.seo.ogImage],
   },
   icons: {
-    icon: '/icon.svg',
+    icon: "/icon.svg",
   },
 };
 
@@ -52,4 +52,3 @@ export default function RootLayout({
     </html>
   );
 }
-
