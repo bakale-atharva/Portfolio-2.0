@@ -1,4 +1,4 @@
-import type { MutationCtx } from "../_generated/server";
+import type { MutationCtx, QueryCtx } from "../_generated/server";
 
 /**
  * Owner allowlist, as a comma-separated `OWNER_EMAILS` env var. Set it on the
@@ -31,9 +31,11 @@ export function isOwnerEmail(
  * do. Without this check, anyone signed in to any Clerk account could call
  * a portfolio mutation directly from the browser console.
  *
- * Throws unless the caller's Clerk session email is in `OWNER_EMAILS`.
+ * Throws unless the caller's Clerk session email is in `OWNER_EMAILS`. Also
+ * used to gate the dashboard's own read queries — those expose unpublished
+ * drafts and document ids, which are not meant for the public query surface.
  */
-export async function assertOwner(ctx: MutationCtx): Promise<void> {
+export async function assertOwner(ctx: MutationCtx | QueryCtx): Promise<void> {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {
     throw new Error("Not authenticated.");
