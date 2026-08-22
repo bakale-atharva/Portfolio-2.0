@@ -1,4 +1,4 @@
-import { HeroContent, Profile } from "@/content/portfolio";
+import { HeroContent, Profile } from "@/lib/content";
 import { Reveal } from "@/components/motion/Reveal";
 import {
   ArrowDownRight,

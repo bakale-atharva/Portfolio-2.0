@@ -1,9 +1,9 @@
 import { ImageResponse } from 'next/og';
-import { portfolioContent } from '@/content/portfolio';
+import { getPortfolioContent } from '@/lib/portfolio';
 
 export const runtime = 'edge';
 
-export const alt = portfolioContent.seo.title;
+export const alt = 'Portfolio';
 export const size = {
   width: 1200,
   height: 630,
@@ -12,6 +12,16 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
+  const content = await getPortfolioContent();
+  const profile = content?.profile ?? {
+    monogram: 'AB',
+    availability: 'Available',
+    name: 'Portfolio',
+    role: '',
+    tagline: '',
+    location: '',
+  };
+
   return new ImageResponse(
     (
       <div
@@ -50,7 +60,7 @@ export default async function Image() {
                 background: '#C7FF3D',
               }}
             />
-            {`${portfolioContent.profile.monogram} // EDITORIAL CIRCUIT`}
+            {`${profile.monogram} // EDITORIAL CIRCUIT`}
           </div>
           <div
             style={{
@@ -60,19 +70,19 @@ export default async function Image() {
               fontWeight: 600,
             }}
           >
-            {portfolioContent.profile.availability.toUpperCase()}
+            {profile.availability.toUpperCase()}
           </div>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ fontSize: '56px', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-1px' }}>
-            {portfolioContent.profile.name}
+            {profile.name}
           </div>
           <div style={{ fontSize: '28px', color: '#66655F', maxWidth: '800px' }}>
-            {portfolioContent.profile.role}
+            {profile.role}
           </div>
           <div style={{ fontSize: '22px', color: '#C7FF3D', marginTop: '12px' }}>
-            {portfolioContent.profile.tagline}
+            {profile.tagline}
           </div>
         </div>
 
@@ -87,7 +97,7 @@ export default async function Image() {
             color: '#66655F',
           }}
         >
-          <div>{portfolioContent.profile.location.toUpperCase()}</div>
+          <div>{profile.location.toUpperCase()}</div>
           <div>NEXT.JS 16 • TAILWIND V4 • TYPESCRIPT</div>
         </div>
       </div>
@@ -97,4 +107,3 @@ export default async function Image() {
     }
   );
 }
-

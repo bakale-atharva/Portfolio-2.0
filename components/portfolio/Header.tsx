@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Profile } from "@/content/portfolio";
+import { Profile } from "@/lib/content";
 import { ThemeToggle } from "@/components/portfolio/ThemeToggle";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 

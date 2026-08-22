@@ -1,5 +1,5 @@
 import React from 'react';
-import { SkillGroup } from '@/content/portfolio';
+import { SkillGroup } from '@/lib/content';
 import { Reveal } from '@/components/motion/Reveal';
 import { SkillsTicker } from '@/components/motion/SkillsTicker';
 import { Code2, Layout, Server, Cpu } from 'lucide-react';

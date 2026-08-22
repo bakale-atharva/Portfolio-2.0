@@ -1,5 +1,5 @@
 import React from 'react';
-import { Profile } from '@/content/portfolio';
+import { Profile } from '@/lib/content';
 import { ArrowUp } from 'lucide-react';
 
 interface FooterProps {

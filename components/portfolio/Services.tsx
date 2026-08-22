@@ -1,5 +1,5 @@
 import React from 'react';
-import { Service } from '@/content/portfolio';
+import { Service } from '@/lib/content';
 import { Reveal } from '@/components/motion/Reveal';
 import { Check, ArrowRight } from 'lucide-react';
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, JetBrains_Mono } from "next/font/google";
-import { portfolioContent } from "@/content/portfolio";
+import { getPortfolioContent, FALLBACK_SEO } from "@/lib/portfolio";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -18,42 +18,50 @@ const jetbrainsMono = JetBrains_Mono({
 // Runs before first paint so the resolved theme is on <html> with no flash.
 const themeScript = `(function(){try{var s=localStorage.getItem("theme");var t=(s==="dark"||s==="light")?s:(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();`;
 
-export const metadata: Metadata = {
-  metadataBase: new URL(portfolioContent.seo.canonicalUrl),
-  title: {
-    default: portfolioContent.seo.title,
-    template: `%s | ${portfolioContent.profile.name}`,
-  },
-  description: portfolioContent.seo.description,
-  alternates: {
-    canonical: portfolioContent.seo.canonicalUrl,
-  },
-  openGraph: {
-    title: portfolioContent.seo.title,
-    description: portfolioContent.seo.description,
-    url: portfolioContent.seo.canonicalUrl,
-    siteName: `${portfolioContent.profile.name} — Editorial Circuit`,
-    locale: "en_US",
-    type: "website",
-    images: [
-      {
-        url: portfolioContent.seo.ogImage,
-        width: 1200,
-        height: 630,
-        alt: portfolioContent.seo.title,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: portfolioContent.seo.title,
-    description: portfolioContent.seo.description,
-    images: [portfolioContent.seo.ogImage],
-  },
-  icons: {
-    icon: "/icon.svg",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getPortfolioContent();
+  const seo = content?.seo ?? FALLBACK_SEO;
+  const siteName = content
+    ? `${content.profile.name} — Editorial Circuit`
+    : seo.title;
+
+  return {
+    metadataBase: new URL(seo.canonicalUrl),
+    title: {
+      default: seo.title,
+      template: content ? `%s | ${content.profile.name}` : "%s",
+    },
+    description: seo.description,
+    alternates: {
+      canonical: seo.canonicalUrl,
+    },
+    openGraph: {
+      title: seo.title,
+      description: seo.description,
+      url: seo.canonicalUrl,
+      siteName,
+      locale: "en_US",
+      type: "website",
+      images: [
+        {
+          url: seo.ogImage,
+          width: 1200,
+          height: 630,
+          alt: seo.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo.title,
+      description: seo.description,
+      images: [seo.ogImage],
+    },
+    icons: {
+      icon: "/icon.svg",
+    },
+  };
+}
 
 export default function RootLayout({
   children,

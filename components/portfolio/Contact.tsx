@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Profile, SocialLink } from '@/content/portfolio';
+import { Profile, SocialLink } from '@/lib/content';
 import { Reveal } from '@/components/motion/Reveal';
 import { Copy, Check, Mail, ArrowUpRight } from 'lucide-react';
 

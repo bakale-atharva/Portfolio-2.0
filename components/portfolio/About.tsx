@@ -1,5 +1,5 @@
 import React from 'react';
-import { AboutContent, Profile } from '@/content/portfolio';
+import { AboutContent, Profile } from '@/lib/content';
 import { Reveal } from '@/components/motion/Reveal';
 import { Download, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
 

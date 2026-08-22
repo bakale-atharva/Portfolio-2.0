@@ -1,5 +1,5 @@
 import React from 'react';
-import { Metric } from '@/content/portfolio';
+import { Metric } from '@/lib/content';
 import { Reveal } from '@/components/motion/Reveal';
 
 interface ProofRailProps {

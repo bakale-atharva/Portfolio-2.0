@@ -1,5 +1,5 @@
 import React from 'react';
-import { Project } from '@/content/portfolio';
+import { Project } from '@/lib/content';
 import { ProjectCard } from './ProjectCard';
 import { Reveal } from '@/components/motion/Reveal';
 

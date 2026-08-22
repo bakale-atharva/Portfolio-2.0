@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { Project } from '@/content/portfolio';
+import { Project } from '@/lib/content';
 import { ExternalLink } from 'lucide-react';
 
 interface ProjectCardProps {

@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
-import { portfolioContent } from '@/content/portfolio';
+import { getSeo } from '@/lib/portfolio';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = portfolioContent.seo.canonicalUrl;
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const seo = await getSeo();
+  const baseUrl = seo.canonicalUrl;
 
   return [
     {
@@ -13,4 +14,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 }
-
