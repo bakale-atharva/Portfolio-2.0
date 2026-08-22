@@ -1,4 +1,5 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
+import { isOwnerEmail } from "@/convex/lib/owner";
 import { SignInScreen } from "./_components/SignInScreen";
 import { EasterEgg } from "./_components/EasterEgg";
 import { EditorShell } from "./_components/EditorShell";
@@ -23,7 +24,9 @@ export default async function DashboardPage() {
   const user = await currentUser();
   const email = user?.primaryEmailAddress?.emailAddress;
 
-  if (email !== process.env.OWNER_EMAIL) {
+  // Same allowlist helper the Convex mutations use, so the screen you see and
+  // the writes you're actually permitted can never disagree.
+  if (!isOwnerEmail(email, process.env.OWNER_EMAILS)) {
     return <EasterEgg />;
   }
 

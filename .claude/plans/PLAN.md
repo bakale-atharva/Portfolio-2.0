@@ -102,8 +102,8 @@ A lime link back to `/`, and a sign-out button.
 ### Security — three layers, and the third is the real one
 
 1. `proxy.ts` runs **bare `clerkMiddleware()`** plus a `config.matcher` export. It establishes the auth context and nothing more — no route matching, no protection. (Two naming traps here: **Next.js 16 renames `middleware.ts` → `proxy.ts`**, and **`createRouteMatcher` is deprecated** — Clerk now wants protection on the resource, not in middleware.)
-2. The `/dashboard` server component calls `await auth()`, compares your Clerk primary email against `OWNER_EMAIL`, and picks one of the three screens. This *is* the resource-based model Clerk migrated to. Note we deliberately do **not** use `auth.protect()` here — it redirects signed-out users and 404s unauthorized ones, which would destroy both the custom sign-in screen and the easter egg. We branch on `auth()` manually instead.
-3. **Every Convex mutation calls `assertOwner(ctx)`**, which checks `ctx.auth.getUserIdentity()` against Convex's own `OWNER_EMAIL` env var.
+2. The `/dashboard` server component calls `await auth()`, compares your Clerk primary email against the `OWNER_EMAILS` allowlist, and picks one of the three screens. This *is* the resource-based model Clerk migrated to. Note we deliberately do **not** use `auth.protect()` here — it redirects signed-out users and 404s unauthorized ones, which would destroy both the custom sign-in screen and the easter egg. We branch on `auth()` manually instead.
+3. **Every Convex mutation calls `assertOwner(ctx)`**, which checks `ctx.auth.getUserIdentity()` against Convex's own `OWNER_EMAILS` env var (a comma-separated allowlist, so more than one account can own the dashboard).
 
 Layers 1–2 are UX. Layer 3 is security: without it, any signed-in stranger could call your mutations directly from the browser console. Non-negotiable.
 
@@ -192,7 +192,7 @@ No visual change. Everything below depends on this being correct.
   ```
 - `proxy.ts` — bare `clerkMiddleware()` and a `config.matcher` export. **No `createRouteMatcher`, no `auth.protect()`**; matcher skips Next internals and static files, always runs for `/(api|trpc)(.*)` and `/__clerk/(.*)`.
 - `app/dashboard/layout.tsx` — `ClerkProvider` **inside `<body>`** wrapping `ConvexProviderWithClerk` (client boundary is scoped to `/dashboard` only, so `/` ships zero auth JS).
-- Build the three gate screens, branching on `await auth()` in the page. Add `OWNER_EMAIL` to `.env.local` **and** to Convex (`npx convex env set OWNER_EMAIL …`).
+- Build the three gate screens, branching on `await auth()` in the page. Add `OWNER_EMAILS` (comma-separated) to `.env.local` **and** to Convex (`npx convex env set OWNER_EMAILS …`).
 - Add `assertOwner(ctx)` and apply it to **every** mutation.
 
 **Verify:** signed out → sign-in screen; signed in as a throwaway account → easter egg; signed in as you → editor shell. Then, signed in as the throwaway, call a mutation from the console and confirm it throws.
@@ -221,10 +221,25 @@ Implement acts 1–10 above. Lenis and cursor behind pointer/motion capability c
 
 ### Phase 6 — Production
 
+**This is the first phase that needs a real domain.** Buy it at the start of this
+phase, not before — everything up to here runs on the Convex/Vercel preview URLs.
+
+- **Domain cutover**, in this order:
+  1. Buy the domain and point DNS at Vercel.
+  2. Edit the `seo.canonicalUrl` row through the dashboard — no code change and
+     no redeploy; `metadata`, `sitemap.ts`, `robots.ts` and the OG image all read
+     from it. **This is the one that actually matters.**
+  3. Set `NEXT_PUBLIC_SITE_URL` to the real origin in Vercel too. It only feeds
+     `FALLBACK_SEO`, so it just stops an unseeded/degraded render from emitting
+     a canonical URL pointing at a domain you don't own.
+  4. Add the domain to the **production Clerk instance**, whose Frontend API URL
+     becomes `https://clerk.<your-domain>.com` — then update
+     `CLERK_FRONTEND_API_URL` on the production Convex deployment to match, or
+     auth breaks.
 - `npx convex deploy` to production; production Clerk instance; all env vars into Vercel.
 - Perf pass against the budget; Lighthouse on the deployed URL.
 - Accessibility sweep: keyboard path through the whole page and the dashboard, focus rings, 44px targets, landmarks, contrast in both themes.
-- Real canonical URL, OG image, `robots.ts`, `sitemap.ts`.
+- Confirm the real canonical URL, OG image, `robots.ts` and `sitemap.ts` all resolve against the live domain.
 - `README.md` documenting env vars and the `convex dev` + `next dev` two-process workflow.
 - Rewrite `.agents/plans/Design.md` — it currently forbids a CMS, a dashboard, and dark mode, all of which we're building.
 
@@ -264,12 +279,12 @@ Everything else about `clerkMiddleware()` — including the `config.matcher` exp
 ## Things you'll need to do yourself
 
 - In the **Clerk Dashboard**, activate the **Convex integration** and copy the **Frontend API URL** (~30 seconds; the CLI can't do this one). This replaces the old "create a JWT template named `convex`" step, which no longer exists.
-- Provide the **production domain** — `content/portfolio.ts` currently claims `https://atharva.dev`; confirm or replace.
+- **Buy the production domain — but not until Phase 6.** Nothing in Phases 1–5 depends on owning it: the canonical URL is just a string in the `seo` row, swappable from the dashboard once Phase 3 lands, with no code change or redeploy. Until then the seeded placeholder stands. (Note `NEXT_PUBLIC_SITE_URL` does *not* override it — that only feeds `FALLBACK_SEO` in `lib/portfolio.ts`, used when the database is unseeded or Convex is unreachable.) See Phase 6 for the cutover steps.
 - Supply the **résumé PDF** (uploadable through the dashboard once Phase 3 lands).
 
 ## Assumptions
 
 - Deploying to Vercel; Convex hosts the backend and file storage.
-- `OWNER_EMAIL` is `atharvabakale13@gmail.com`.
+- `OWNER_EMAILS` is `atharvabakale13@gmail.com,bakaleatharva13@gmail.com`.
 - pnpm stays the package manager; no `src/` directory (existing convention).
 - Contact stays `mailto:` + copy-to-clipboard for now. A Convex-backed form is a clean follow-on once the backbone exists.

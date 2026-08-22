@@ -192,7 +192,7 @@ export const getPublishedContent = query({
  * Every mutation below opens with `assertOwner(ctx)`. The `/dashboard` gate
  * (proxy.ts + the server component's three-state branch) is UX, not security
  * — this is the actual boundary: it throws unless the caller's Clerk session
- * email matches `OWNER_EMAIL`, so a signed-in stranger who finds these
+ * email is in the `OWNER_EMAILS` allowlist, so a signed-in stranger who finds these
  * function names in the client bundle still can't call them.
  */
 
