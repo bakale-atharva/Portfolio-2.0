@@ -19,7 +19,7 @@ export function ProofRail({ metrics }: ProofRailProps) {
                   index !== 0 ? 'pt-6 md:pt-0 md:pl-8' : ''
                 }`}
               >
-                <span className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-ink tracking-tight">
+                <span className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-ink tracking-tighter">
                   {metric.value}
                 </span>
                 <span className="font-mono text-xs uppercase tracking-wider text-ink font-semibold mt-2">

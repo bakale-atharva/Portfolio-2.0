@@ -19,7 +19,7 @@ export function About({ profile, about }: AboutProps) {
               <span className="font-mono text-xs tracking-widest uppercase text-muted">
                 {about.sectionLabel}
               </span>
-              <h2 className="text-3xl sm:text-5xl font-bold font-display text-ink uppercase tracking-tight mt-2">
+              <h2 className="text-4xl sm:text-6xl font-bold font-display text-ink uppercase tracking-tighter mt-2">
                 {about.heading}
               </h2>
             </div>
@@ -83,12 +83,15 @@ export function About({ profile, about }: AboutProps) {
             </Reveal>
           </div>
 
-          {/* Right Column: Status Card & Resume CTA */}
+          {/* Right Column: Status Card & Resume CTA — an elevated surface
+              panel, not the old always-black card: canvas is already dark
+              by default now, so bg-surface reads as raised without needing
+              the ink-inversion trick. */}
           <div className="lg:col-span-5">
             <Reveal yOffset={40} delay={0.2}>
-              <div className="border border-hairline bg-ink text-canvas p-8 rounded-2xl space-y-8 shadow-xl">
-                <div className="flex items-center justify-between border-b border-white/10 pb-6">
-                  <span className="font-mono text-xs uppercase tracking-widest text-white/50">
+              <div className="border border-hairline bg-surface text-ink p-8 rounded-2xl space-y-8 shadow-xl">
+                <div className="flex items-center justify-between border-b border-hairline pb-6">
+                  <span className="font-mono text-xs uppercase tracking-widest text-muted">
                     {about.statusLabel}
                   </span>
                   <ShieldCheck className="w-5 h-5 text-accent" />
@@ -100,12 +103,12 @@ export function About({ profile, about }: AboutProps) {
                     <span>{profile.availability}</span>
                   </div>
 
-                  <p className="text-sm font-display text-white/80 leading-relaxed">
+                  <p className="text-sm font-display text-muted leading-relaxed">
                     {about.availabilityNote}
                   </p>
                 </div>
 
-                <div className="pt-6 border-t border-white/10 space-y-4">
+                <div className="pt-6 border-t border-hairline space-y-4">
                   <a
                     href={profile.resumeUrl}
                     target="_blank"
@@ -116,7 +119,7 @@ export function About({ profile, about }: AboutProps) {
                     <span>{about.resumeCtaLabel}</span>
                   </a>
 
-                  <p className="text-[11px] font-mono text-center text-white/50">
+                  <p className="text-[11px] font-mono text-center text-muted">
                     {about.resumeNote}
                   </p>
                 </div>

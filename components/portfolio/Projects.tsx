@@ -18,7 +18,7 @@ export function Projects({ projects }: ProjectsProps) {
               <span className="font-mono text-xs tracking-widest uppercase text-muted">
                 {"// 01 SELECTED WORK"}
               </span>
-              <h2 className="text-3xl sm:text-5xl font-bold font-display text-ink uppercase tracking-tight mt-2">
+              <h2 className="text-4xl sm:text-6xl font-bold font-display text-ink uppercase tracking-tighter mt-2">
                 Featured Projects
               </h2>
             </div>
@@ -28,12 +28,24 @@ export function Projects({ projects }: ProjectsProps) {
           </div>
         </Reveal>
 
-        {/* Projects List */}
-        <div className="space-y-12 md:space-y-16">
+        {/*
+          Structural sticky-stacking: each card pins under the sticky header
+          as you scroll, and the next card scrolls up to cover it — pure CSS
+          `position: sticky`, no JS. The scroll-driven scale/opacity fade on
+          the card being covered is Phase 5's job (act #3 in the motion
+          layer); this is the layout it plugs into.
+        */}
+        <div>
           {projects.map((project, index) => (
-            <Reveal key={project.slug} yOffset={30} delay={index * 0.1}>
-              <ProjectCard project={project} index={index} />
-            </Reveal>
+            <div
+              key={project.slug}
+              className="sticky top-20 md:top-24 pb-8 md:pb-12"
+              style={{ zIndex: index + 1 }}
+            >
+              <Reveal yOffset={30}>
+                <ProjectCard project={project} index={index} />
+              </Reveal>
+            </div>
           ))}
         </div>
       </div>

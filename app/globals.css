@@ -10,6 +10,10 @@
 @theme inline {
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  /* The one accent-word face — used nowhere else. Distinct name from the
+     raw `--font-serif` next/font sets on <html>, same as font-display/
+     font-archivo below, so this isn't a self-reference. */
+  --font-accent: var(--font-serif), Georgia, serif;
 
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
@@ -23,40 +27,45 @@
   --animate-marquee: marquee 25s linear infinite;
 }
 
+/* Dark is the default theme (Nocturne Editorial) — :root carries the dark
+   palette directly rather than living under [data-theme="dark"], so a
+   visitor with no stored preference and no explicit OS light-mode signal
+   gets dark with zero extra selector specificity or FOUC risk. */
 :root {
-  --canvas: #f3f0e8;
-  --surface: #faf8f2;
-  --ink: #11110f;
-  --muted: #66655f;
-  --accent: #c7ff3d;
-  /* Accent is light in both themes, so its foreground is always near-black. */
-  --on-accent: #11110f;
-  --hairline: rgba(17, 17, 15, 0.18);
-  color-scheme: light;
-}
-
-[data-theme="dark"] {
   --canvas: #0b0b0a;
   --surface: #141412;
   --ink: #f3f0e8;
   --muted: #8a887f;
   --accent: #c7ff3d;
+  /* Accent is light in both themes, so its foreground is always near-black. */
   --on-accent: #11110f;
   --hairline: rgba(243, 240, 232, 0.14);
   color-scheme: dark;
 }
 
+[data-theme="light"] {
+  --canvas: #f3f0e8;
+  --surface: #faf8f2;
+  --ink: #11110f;
+  --muted: #66655f;
+  --accent: #c7ff3d;
+  --on-accent: #11110f;
+  --hairline: rgba(17, 17, 15, 0.18);
+  color-scheme: light;
+}
+
 /* No-JS fallback only. Once the inline script runs, [data-theme] is always
-   present and this block is inert. */
-@media (prefers-color-scheme: dark) {
+   present and this block is inert. Dark is already :root's default, so the
+   only case to handle here is an OS that explicitly prefers light. */
+@media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
-    --canvas: #0b0b0a;
-    --surface: #141412;
-    --ink: #f3f0e8;
-    --muted: #8a887f;
+    --canvas: #f3f0e8;
+    --surface: #faf8f2;
+    --ink: #11110f;
+    --muted: #66655f;
     --accent: #c7ff3d;
-    --hairline: rgba(243, 240, 232, 0.14);
-    color-scheme: dark;
+    --hairline: rgba(17, 17, 15, 0.18);
+    color-scheme: light;
   }
 }
 

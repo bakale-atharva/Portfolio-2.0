@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
-import { Archivo, JetBrains_Mono } from "next/font/google";
+import { Archivo, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { getPortfolioContent, FALLBACK_SEO } from "@/lib/portfolio";
 import "./globals.css";
 
+// `axes: ["wdth"]` pulls in the width axis alongside the default weight axis —
+// unused until Phase 5's scroll-driven headline stretch, but free to include
+// now and avoids a font re-fetch/layout-shift risk when that lands.
 const archivo = Archivo({
   subsets: ["latin"],
   variable: "--font-archivo",
   display: "swap",
+  axes: ["wdth"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -15,8 +19,19 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+// The one serif accent word in the hero — not a general-purpose font.
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: "italic",
+  variable: "--font-serif",
+  display: "swap",
+});
+
 // Runs before first paint so the resolved theme is on <html> with no flash.
-const themeScript = `(function(){try{var s=localStorage.getItem("theme");var t=(s==="dark"||s==="light")?s:(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();`;
+// Dark is the default: only an explicit stored preference or an explicit
+// OS light-mode signal resolves to light.
+const themeScript = `(function(){try{var s=localStorage.getItem("theme");var t=(s==="dark"||s==="light")?s:(window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();`;
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getPortfolioContent();
@@ -71,7 +86,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`scroll-smooth ${archivo.variable} ${jetbrainsMono.variable}`}
+      className={`scroll-smooth ${archivo.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable}`}
       suppressHydrationWarning
     >
       <head>

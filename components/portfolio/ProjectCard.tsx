@@ -18,7 +18,11 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   const isReverse = !isShowcase && index % 2 === 1;
 
   return (
-    <article className="group relative border border-hairline bg-surface/70 hover:bg-surface transition-all duration-300 rounded-2xl overflow-hidden shadow-sm hover:shadow-md">
+    // Solid bg-surface, not bg-surface/70: this card sits inside the
+    // sticky-stacking layout in Projects.tsx, where the next card scrolls
+    // up to visually cover this one — translucency would let it bleed
+    // through and break the stacking illusion.
+    <article className="group relative border border-hairline bg-surface transition-all duration-300 rounded-2xl overflow-hidden shadow-sm hover:shadow-md">
       <div
         className={`grid grid-cols-1 ${
           isShowcase

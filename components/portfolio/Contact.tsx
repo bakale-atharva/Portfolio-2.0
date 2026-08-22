@@ -39,16 +39,18 @@ export function Contact({ profile, socialLinks }: ContactProps) {
           {/* Main Headline & Interactive Copy Block */}
           <div className="lg:col-span-8 space-y-8">
             <Reveal yOffset={30}>
-              <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold font-display text-ink uppercase tracking-tight leading-[1.05]">
+              <h2 className="text-5xl sm:text-7xl md:text-8xl font-bold font-display text-ink uppercase tracking-tighter leading-[0.95]">
                 Start a project. <br />
                 <span className="text-muted">Let&apos;s build something extraordinary.</span>
               </h2>
             </Reveal>
 
-            {/* Interactive Email Copy Block */}
+            {/* Interactive Email Copy Block — an elevated surface panel,
+                matching the other cards' move away from the ink-inversion
+                trick now that canvas is dark by default. */}
             <Reveal yOffset={30} delay={0.15}>
-              <div className="border border-hairline bg-ink text-canvas p-6 sm:p-8 rounded-2xl space-y-6 shadow-2xl relative overflow-hidden">
-                <div className="flex items-center justify-between font-mono text-xs text-white/50 border-b border-white/10 pb-4">
+              <div className="border border-hairline bg-surface text-ink p-6 sm:p-8 rounded-2xl space-y-6 shadow-2xl relative overflow-hidden">
+                <div className="flex items-center justify-between font-mono text-xs text-muted border-b border-hairline pb-4">
                   <span className="flex items-center gap-2">
                     <Mail className="w-4 h-4 text-accent" />
                     <span>DIRECT STUDIO EMAIL</span>
@@ -57,7 +59,7 @@ export function Contact({ profile, socialLinks }: ContactProps) {
                 </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <span className="font-mono text-xl sm:text-2xl lg:text-3xl font-bold text-canvas tracking-tight select-all">
+                  <span className="font-mono text-xl sm:text-2xl lg:text-3xl font-bold text-ink tracking-tight select-all">
                     {profile.email}
                   </span>
 
@@ -83,7 +85,7 @@ export function Contact({ profile, socialLinks }: ContactProps) {
 
                     <a
                       href={`mailto:${profile.email}`}
-                      className="inline-flex items-center justify-center p-3.5 rounded-full border border-white/20 hover:border-white text-canvas transition-all touch-target"
+                      className="inline-flex items-center justify-center p-3.5 rounded-full border border-hairline hover:border-ink text-ink transition-all touch-target"
                       aria-label="Send email via default client"
                     >
                       <ArrowUpRight className="w-5 h-5 text-accent" />

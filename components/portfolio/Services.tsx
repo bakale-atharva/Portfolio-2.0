@@ -18,7 +18,7 @@ export function Services({ services }: ServicesProps) {
               <span className="font-mono text-xs tracking-widest uppercase text-muted">
                 {"// 02 SERVICES & OFFERS"}
               </span>
-              <h2 className="text-3xl sm:text-5xl font-bold font-display text-ink uppercase tracking-tight mt-2">
+              <h2 className="text-4xl sm:text-6xl font-bold font-display text-ink uppercase tracking-tighter mt-2">
                 Specialized Capabilities
               </h2>
             </div>
@@ -28,37 +28,40 @@ export function Services({ services }: ServicesProps) {
           </div>
         </Reveal>
 
-        {/* 3 Dark Ink Cards Grid */}
+        {/* Elevated surface cards — canvas is already dark by default, so
+            these read as raised panels without the old always-black-card
+            trick, which would invert to a light card once dark became the
+            default theme. */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <Reveal key={service.id} yOffset={30} delay={index * 0.1}>
-              <div className="h-full flex flex-col justify-between border border-hairline bg-ink text-canvas p-8 rounded-2xl relative group overflow-hidden shadow-xl hover:border-accent/50 transition-all duration-300">
+              <div className="h-full flex flex-col justify-between border border-hairline bg-surface text-ink p-8 rounded-2xl relative group overflow-hidden shadow-xl hover:border-accent/50 transition-all duration-300">
                 <div>
                   {/* Card Number */}
-                  <div className="flex items-center justify-between border-b border-white/10 pb-6 mb-6">
+                  <div className="flex items-center justify-between border-b border-hairline pb-6 mb-6">
                     <span className="font-mono text-4xl font-bold text-accent">
                       {service.id}
                     </span>
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2.5 py-1 rounded-full">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted border border-hairline px-2.5 py-1 rounded-full">
                       STUDIO OFFER
                     </span>
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-2xl font-bold font-display text-canvas mb-4 uppercase">
+                  <h3 className="text-2xl font-bold font-display text-ink mb-4 uppercase">
                     {service.title}
                   </h3>
-                  <p className="text-sm font-display text-white/70 leading-relaxed mb-8">
+                  <p className="text-sm font-display text-muted leading-relaxed mb-8">
                     {service.description}
                   </p>
 
                   {/* Deliverables List */}
-                  <div className="space-y-3 mb-8 border-t border-white/10 pt-6">
+                  <div className="space-y-3 mb-8 border-t border-hairline pt-6">
                     <span className="font-mono text-xs uppercase tracking-wider text-accent font-semibold block mb-4">
                       {"// KEY DELIVERABLES"}
                     </span>
                     {service.deliverables.map((item) => (
-                      <div key={item} className="flex items-start gap-3 text-xs font-mono text-white/80">
+                      <div key={item} className="flex items-start gap-3 text-xs font-mono text-ink/80">
                         <span className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center text-accent shrink-0 mt-0.5">
                           <Check className="w-2.5 h-2.5" />
                         </span>
@@ -69,10 +72,10 @@ export function Services({ services }: ServicesProps) {
                 </div>
 
                 {/* CTA Button */}
-                <div className="pt-6 border-t border-white/10">
+                <div className="pt-6 border-t border-hairline">
                   <a
                     href="#contact"
-                    className="w-full inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-accent hover:text-on-accent text-canvas font-mono text-xs font-semibold uppercase py-3.5 px-4 rounded-full transition-all touch-target"
+                    className="w-full inline-flex items-center justify-center gap-2 bg-canvas hover:bg-accent hover:text-on-accent text-ink font-mono text-xs font-semibold uppercase py-3.5 px-4 rounded-full transition-all touch-target"
                   >
                     <span>{service.ctaText}</span>
                     <ArrowRight className="w-4 h-4" />

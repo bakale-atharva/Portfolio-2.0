@@ -39,7 +39,7 @@ export function Skills({ skillGroups }: SkillsProps) {
               <span className="font-mono text-xs tracking-widest uppercase text-muted">
                 {"// 03 TECHNICAL CAPABILITIES"}
               </span>
-              <h2 className="text-3xl sm:text-5xl font-bold font-display text-ink uppercase tracking-tight mt-2">
+              <h2 className="text-4xl sm:text-6xl font-bold font-display text-ink uppercase tracking-tighter mt-2">
                 Stack & Disciplines
               </h2>
             </div>
@@ -53,10 +53,10 @@ export function Skills({ skillGroups }: SkillsProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {skillGroups.map((group, index) => (
             <Reveal key={group.category} yOffset={30} delay={index * 0.1}>
-              <div className="h-full border border-hairline bg-surface/70 hover:bg-surface p-6 rounded-2xl transition-all duration-300 shadow-sm flex flex-col justify-between">
+              <div className="h-full border border-hairline bg-surface/70 hover:bg-surface hover:border-accent/40 p-6 rounded-2xl transition-all duration-300 shadow-sm flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-3 border-b border-hairline pb-4 mb-4">
-                    <div className="w-9 h-9 rounded-lg bg-ink flex items-center justify-center">
+                    <div className="w-9 h-9 rounded-lg bg-canvas border border-hairline flex items-center justify-center">
                       {getCategoryIcon(group.category)}
                     </div>
                     <div>
@@ -87,7 +87,10 @@ export function Skills({ skillGroups }: SkillsProps) {
         </div>
       </div>
 
-      {/* Kinetic Infinite Ticker Band */}
+      {/* Kinetic Infinite Ticker Band — a deliberate inverted contrast band,
+          not a "panel"; it's meant to read as a rhythm break in both
+          themes, so it stays on the ink-inversion trick the surface cards
+          above just moved away from. */}
       <Reveal yOffset={20}>
         <SkillsTicker skills={allSkills} />
       </Reveal>
