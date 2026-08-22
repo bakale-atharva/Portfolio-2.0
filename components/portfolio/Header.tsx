@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Profile } from "@/content/portfolio";
+import { ThemeToggle } from "@/components/portfolio/ThemeToggle";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 
 interface HeaderProps {
@@ -19,7 +20,7 @@ export function Header({ profile }: HeaderProps) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-paper/90 backdrop-blur-md border-b border-hairline transition-colors">
+    <header className="sticky top-0 z-50 bg-canvas/90 backdrop-blur-md border-b border-hairline transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Monogram emblem */}
         <a
@@ -28,7 +29,7 @@ export function Header({ profile }: HeaderProps) {
           aria-label="Atharva Bakale Home"
         >
           <span>{profile.monogram}</span>
-          <span className="w-2.5 h-2.5 rounded-full bg-lime border border-ink/20 inline-block" />
+          <span className="w-2.5 h-2.5 rounded-full bg-accent border border-ink/20 inline-block" />
         </a>
 
         {/* Desktop Navigation */}
@@ -40,7 +41,7 @@ export function Header({ profile }: HeaderProps) {
             <a
               key={link.href}
               href={link.href}
-              className="font-mono text-xs tracking-wider uppercase text-slate hover:text-ink transition-colors py-2 touch-target inline-flex items-center"
+              className="font-mono text-xs tracking-wider uppercase text-muted hover:text-ink transition-colors py-2 touch-target inline-flex items-center"
             >
               {link.name}
             </a>
@@ -49,42 +50,46 @@ export function Header({ profile }: HeaderProps) {
 
         {/* Right side: Availability badge & CTA */}
         <div className="hidden lg:flex items-center gap-6">
-          <div className="inline-flex items-center gap-2 text-xs font-mono px-3 py-1.5 rounded-full border border-hairline bg-white/50">
+          <div className="inline-flex items-center gap-2 text-xs font-mono px-3 py-1.5 rounded-full border border-hairline bg-surface/50">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-lime"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
             </span>
-            <span className="text-slate">Available for work</span>
+            <span className="text-muted">Available for work</span>
           </div>
 
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 bg-ink text-paper hover:bg-ink/90 font-mono text-xs font-medium uppercase px-5 py-3 rounded-full transition-transform active:scale-95 touch-target"
+            className="inline-flex items-center gap-2 bg-ink text-canvas hover:bg-ink/90 font-mono text-xs font-medium uppercase px-5 py-3 rounded-full transition-transform active:scale-95 touch-target"
           >
-            <span className="font-white">Let&apos;s work</span>
-            <ArrowUpRight className="w-4 h-4 text-lime" />
+            <span>Let&apos;s work</span>
+            <ArrowUpRight className="w-4 h-4 text-accent" />
           </a>
         </div>
 
-        {/* Mobile menu trigger */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-ink hover:text-slate touch-target inline-flex items-center justify-center rounded-md focus:outline-none"
-          aria-expanded={mobileMenuOpen}
-          aria-label="Toggle navigation menu"
-        >
-          {mobileMenuOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+
+          {/* Mobile menu trigger */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 text-ink hover:text-muted touch-target inline-flex items-center justify-center rounded-md focus:outline-none"
+            aria-expanded={mobileMenuOpen}
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-hairline bg-paper px-4 pt-4 pb-6 space-y-4">
+        <div className="md:hidden border-t border-hairline bg-canvas px-4 pt-4 pb-6 space-y-4">
           <nav
             className="flex flex-col space-y-3"
             aria-label="Mobile Navigation"
@@ -94,24 +99,24 @@ export function Header({ profile }: HeaderProps) {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="font-mono text-sm uppercase tracking-wider text-slate hover:text-ink py-2 touch-target"
+                className="font-mono text-sm uppercase tracking-wider text-muted hover:text-ink py-2 touch-target"
               >
                 {link.name}
               </a>
             ))}
           </nav>
           <div className="pt-4 border-t border-hairline flex flex-col gap-3">
-            <div className="inline-flex items-center gap-2 text-xs font-mono px-3 py-2 rounded-full border border-hairline bg-white/50 w-fit">
-              <span className="w-2 h-2 rounded-full bg-lime" />
-              <span className="text-slate">Available for work</span>
+            <div className="inline-flex items-center gap-2 text-xs font-mono px-3 py-2 rounded-full border border-hairline bg-surface/50 w-fit">
+              <span className="w-2 h-2 rounded-full bg-accent" />
+              <span className="text-muted">Available for work</span>
             </div>
             <a
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="inline-flex items-center justify-center gap-2 bg-ink text-paper font-mono text-xs font-medium uppercase px-5 py-3 rounded-full touch-target text-center"
+              className="inline-flex items-center justify-center gap-2 bg-ink text-canvas font-mono text-xs font-medium uppercase px-5 py-3 rounded-full touch-target text-center"
             >
               <span>Let&apos;s work</span>
-              <ArrowUpRight className="w-4 h-4 text-lime" />
+              <ArrowUpRight className="w-4 h-4 text-accent" />
             </a>
           </div>
         </div>

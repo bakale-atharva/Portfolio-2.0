@@ -10,19 +10,27 @@ import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 
 export default function Home() {
-  const { profile, metrics, projects, services, skillGroups, socialLinks } =
-    portfolioContent;
+  const {
+    profile,
+    hero,
+    about,
+    metrics,
+    projects,
+    services,
+    skillGroups,
+    socialLinks,
+  } = portfolioContent;
 
   return (
-    <div className="min-h-screen flex flex-col bg-paper text-ink">
+    <div className="min-h-screen flex flex-col bg-canvas text-ink">
       <Header profile={profile} />
       <main id="top" className="grow">
-        <Hero profile={profile} />
+        <Hero profile={profile} hero={hero} />
         <ProofRail metrics={metrics} />
         <Projects projects={projects} />
         <Services services={services} />
         <Skills skillGroups={skillGroups} />
-        <About profile={profile} />
+        <About profile={profile} about={about} />
         <Contact profile={profile} socialLinks={socialLinks} />
       </main>
       <Footer profile={profile} />

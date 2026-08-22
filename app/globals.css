@@ -1,22 +1,83 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --color-bg-paper: #F3F0E8;
-  --color-text-ink: #11110F;
-  --color-text-slate: #66655F;
-  --color-accent-lime: #C7FF3D;
-  --color-border-hairline: rgba(17, 17, 15, 0.18);
+/* `data-theme` is the single source of truth; the inline script in layout.tsx
+   resolves stored preference -> system preference and sets it before paint. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* `inline` is required: it makes the utilities emit `var(--canvas)` rather than
+   baking in the value, so :root / [data-theme] can swap tokens at runtime and
+   opacity modifiers (bg-ink/90) still resolve through color-mix. */
+@theme inline {
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-hairline: var(--hairline);
+
+  --animate-fade-in: fade-in 0.3s ease-out both;
+  --animate-marquee: marquee 25s linear infinite;
 }
 
 :root {
-  --bg-paper: #F3F0E8;
-  --text-ink: #11110F;
-  --text-slate: #66655F;
-  --accent-lime: #C7FF3D;
-  --border-hairline: rgba(17, 17, 15, 0.18);
+  --canvas: #f3f0e8;
+  --surface: #faf8f2;
+  --ink: #11110f;
+  --muted: #66655f;
+  --accent: #c7ff3d;
+  /* Accent is light in both themes, so its foreground is always near-black. */
+  --on-accent: #11110f;
+  --hairline: rgba(17, 17, 15, 0.18);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --canvas: #0b0b0a;
+  --surface: #141412;
+  --ink: #f3f0e8;
+  --muted: #8a887f;
+  --accent: #c7ff3d;
+  --on-accent: #11110f;
+  --hairline: rgba(243, 240, 232, 0.14);
+  color-scheme: dark;
+}
+
+/* No-JS fallback only. Once the inline script runs, [data-theme] is always
+   present and this block is inert. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --canvas: #0b0b0a;
+    --surface: #141412;
+    --ink: #f3f0e8;
+    --muted: #8a887f;
+    --accent: #c7ff3d;
+    --hairline: rgba(243, 240, 232, 0.14);
+    color-scheme: dark;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 html {
@@ -24,61 +85,18 @@ html {
 }
 
 body {
-  background-color: var(--bg-paper);
-  color: var(--text-ink);
-  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-display);
   margin: 0;
   padding: 0;
 }
 
-/* Custom font utilities */
-.font-display {
-  font-family: 'Space Grotesk', sans-serif;
-}
-
-.font-mono {
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* Custom utility classes */
-.bg-paper {
-  background-color: var(--bg-paper);
-}
-
-.text-ink {
-  color: var(--text-ink);
-}
-
-.text-slate {
-  color: var(--text-slate);
-}
-
-.bg-ink {
-  background-color: var(--text-ink);
-}
-
-.text-lime {
-  color: var(--accent-lime);
-}
-
-.bg-lime {
-  background-color: var(--accent-lime);
-}
-
-.border-hairline {
-  border-color: var(--border-hairline);
-}
-
-/* Light text color used on dark backgrounds (e.g. .bg-ink) */
-.text-paper {
-  color: var(--bg-paper);
-}
-
 /* Focus ring styles */
 :focus-visible {
-  outline: 2px solid #11110F;
+  outline: 2px solid var(--ink);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px #C7FF3D;
+  box-shadow: 0 0 0 4px var(--accent);
 }
 
 /* Touch targets */
@@ -87,6 +105,13 @@ body {
   min-width: 44px;
   display: inline-flex;
   align-items: center;
+}
+
+/* Marquee pauses on hover; `animation-play-state` only works on a real CSS
+   animation, which is why this is not a Motion value. */
+.marquee-track:hover,
+.marquee-track:focus-within {
+  animation-play-state: paused;
 }
 
 /* Reduced motion global overrides */

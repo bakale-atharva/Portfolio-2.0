@@ -24,12 +24,12 @@ export function Contact({ profile, socialLinks }: ContactProps) {
   };
 
   return (
-    <section id="contact" className="py-20 md:py-32 border-b border-hairline bg-paper relative overflow-hidden">
+    <section id="contact" className="py-20 md:py-32 border-b border-hairline bg-canvas relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header Tag */}
         <Reveal yOffset={20}>
           <div className="mb-12 border-b border-hairline pb-6">
-            <span className="font-mono text-xs tracking-widest uppercase text-slate">
+            <span className="font-mono text-xs tracking-widest uppercase text-muted">
               {"// 05 INITIATE CONTACT"}
             </span>
           </div>
@@ -41,23 +41,23 @@ export function Contact({ profile, socialLinks }: ContactProps) {
             <Reveal yOffset={30}>
               <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold font-display text-ink uppercase tracking-tight leading-[1.05]">
                 Start a project. <br />
-                <span className="text-slate">Let&apos;s build something extraordinary.</span>
+                <span className="text-muted">Let&apos;s build something extraordinary.</span>
               </h2>
             </Reveal>
 
             {/* Interactive Email Copy Block */}
             <Reveal yOffset={30} delay={0.15}>
-              <div className="border border-hairline bg-ink text-paper p-6 sm:p-8 rounded-2xl space-y-6 shadow-2xl relative overflow-hidden">
+              <div className="border border-hairline bg-ink text-canvas p-6 sm:p-8 rounded-2xl space-y-6 shadow-2xl relative overflow-hidden">
                 <div className="flex items-center justify-between font-mono text-xs text-white/50 border-b border-white/10 pb-4">
                   <span className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-lime" />
+                    <Mail className="w-4 h-4 text-accent" />
                     <span>DIRECT STUDIO EMAIL</span>
                   </span>
-                  <span className="text-lime">READY</span>
+                  <span className="text-accent">READY</span>
                 </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <span className="font-mono text-xl sm:text-2xl lg:text-3xl font-bold text-paper tracking-tight select-all">
+                  <span className="font-mono text-xl sm:text-2xl lg:text-3xl font-bold text-canvas tracking-tight select-all">
                     {profile.email}
                   </span>
 
@@ -65,17 +65,17 @@ export function Contact({ profile, socialLinks }: ContactProps) {
                     <button
                       type="button"
                       onClick={handleCopyEmail}
-                      className="inline-flex items-center gap-2 bg-lime text-ink hover:bg-lime/90 font-mono text-xs font-bold uppercase px-5 py-3.5 rounded-full transition-all active:scale-95 touch-target"
+                      className="inline-flex items-center gap-2 bg-accent text-on-accent hover:bg-accent/90 font-mono text-xs font-bold uppercase px-5 py-3.5 rounded-full transition-all active:scale-95 touch-target"
                       aria-label="Copy email address"
                     >
                       {copied ? (
                         <>
-                          <Check className="w-4 h-4 text-ink" />
+                          <Check className="w-4 h-4" />
                           <span>Copied!</span>
                         </>
                       ) : (
                         <>
-                          <Copy className="w-4 h-4 text-ink" />
+                          <Copy className="w-4 h-4" />
                           <span>Copy Email</span>
                         </>
                       )}
@@ -83,10 +83,10 @@ export function Contact({ profile, socialLinks }: ContactProps) {
 
                     <a
                       href={`mailto:${profile.email}`}
-                      className="inline-flex items-center justify-center p-3.5 rounded-full border border-white/20 hover:border-white text-paper transition-all touch-target"
+                      className="inline-flex items-center justify-center p-3.5 rounded-full border border-white/20 hover:border-white text-canvas transition-all touch-target"
                       aria-label="Send email via default client"
                     >
-                      <ArrowUpRight className="w-5 h-5 text-lime" />
+                      <ArrowUpRight className="w-5 h-5 text-accent" />
                     </a>
                   </div>
                 </div>
@@ -94,10 +94,10 @@ export function Contact({ profile, socialLinks }: ContactProps) {
                 {/* Copied Feedback Toast */}
                 {copied && (
                   <div
-                    className="absolute bottom-3 left-6 font-mono text-[11px] text-lime flex items-center gap-1.5 animate-fadeIn"
+                    className="absolute bottom-3 left-6 font-mono text-[11px] text-accent flex items-center gap-1.5 animate-fade-in"
                     role="status"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-lime" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                     <span>Email copied to clipboard successfully</span>
                   </div>
                 )}
@@ -108,8 +108,8 @@ export function Contact({ profile, socialLinks }: ContactProps) {
           {/* Social Links & Availability info */}
           <div className="lg:col-span-4 space-y-8">
             <Reveal yOffset={30} delay={0.2}>
-              <div className="border border-hairline bg-white/70 p-6 sm:p-8 rounded-2xl space-y-6">
-                <h3 className="font-mono text-xs font-semibold uppercase tracking-wider text-slate border-b border-hairline pb-3">
+              <div className="border border-hairline bg-surface/70 p-6 sm:p-8 rounded-2xl space-y-6">
+                <h3 className="font-mono text-xs font-semibold uppercase tracking-wider text-muted border-b border-hairline pb-3">
                   {"// CONNECT & CHANNELS"}
                 </h3>
 
@@ -120,10 +120,10 @@ export function Contact({ profile, socialLinks }: ContactProps) {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between font-mono text-sm uppercase text-ink hover:text-slate p-3 rounded-lg border border-hairline bg-paper hover:bg-white transition-all group touch-target"
+                      className="flex items-center justify-between font-mono text-sm uppercase text-ink hover:text-muted p-3 rounded-lg border border-hairline bg-canvas hover:bg-surface transition-all group touch-target"
                     >
                       <span className="font-semibold">{link.name}</span>
-                      <ArrowUpRight className="w-4 h-4 text-slate group-hover:text-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      <ArrowUpRight className="w-4 h-4 text-muted group-hover:text-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </a>
                   ))}
                 </div>

@@ -16,6 +16,13 @@ export interface Metric {
   description: string;
 }
 
+/**
+ * `standard` renders the split image/detail card, alternating sides by
+ * position. `showcase` renders the full-width tall variant. The card reads
+ * this instead of hardcoding behaviour for specific indices.
+ */
+export type ProjectLayout = "standard" | "showcase";
+
 export interface Project {
   slug: string;
   title: string;
@@ -26,6 +33,61 @@ export interface Project {
   image: string;
   liveUrl: string;
   githubUrl: string | null;
+  layout?: ProjectLayout;
+}
+
+export interface CtaLink {
+  label: string;
+  href: string;
+}
+
+export interface HeroPanelStat {
+  label: string;
+  value: string;
+  /** Progress bar fill, 0-100. */
+  progress: number;
+}
+
+export interface HeroPanelBadge {
+  label: string;
+  value: string;
+  /** Render the value in the accent colour rather than the default ink. */
+  emphasis: boolean;
+}
+
+export interface HeroContent {
+  headlineLead: string;
+  headlineAccent: string;
+  headlineTrail: string;
+  primaryCta: CtaLink;
+  secondaryCta: CtaLink;
+  panel: {
+    signal: string;
+    roleLabel: string;
+    roleStatus: string;
+    stats: HeroPanelStat[];
+    badges: HeroPanelBadge[];
+  };
+}
+
+export interface Strength {
+  title: string;
+  description: string;
+}
+
+export interface AboutContent {
+  sectionLabel: string;
+  heading: string;
+  intro: string;
+  cardHeading: string;
+  philosophyLabel: string;
+  philosophy: string;
+  strengthsLabel: string;
+  strengths: Strength[];
+  statusLabel: string;
+  availabilityNote: string;
+  resumeCtaLabel: string;
+  resumeNote: string;
 }
 
 export interface Service {
@@ -55,6 +117,8 @@ export interface SeoMetadata {
 
 export interface PortfolioContent {
   profile: Profile;
+  hero: HeroContent;
+  about: AboutContent;
   metrics: Metric[];
   projects: Project[];
   services: Service[];
@@ -75,6 +139,66 @@ export const portfolioContent: PortfolioContent = {
     location: "Pune, In",
     email: "atharvabakale13@gmail.com",
     resumeUrl: "/resume.pdf",
+  },
+
+  hero: {
+    headlineLead: "I build",
+    headlineAccent: "expressive",
+    headlineTrail: "digital experiences.",
+    primaryCta: { label: "View work", href: "#work" },
+    secondaryCta: { label: "Start a project", href: "#contact" },
+    panel: {
+      signal: "LIVE STUDIO SIGNAL // v2.0",
+      roleLabel: "ROLE",
+      roleStatus: "ACTIVE",
+      stats: [
+        { label: "FRAMEWORK", value: "NEXT.JS 16 + REACT", progress: 80 },
+        { label: "DESIGN SYSTEM", value: "EDITORIAL CIRCUIT", progress: 100 },
+      ],
+      badges: [
+        { label: "STATUS", value: "OPEN FOR Q3/Q4", emphasis: true },
+        { label: "LATENCY", value: "< 10ms TARGET", emphasis: false },
+      ],
+    },
+  },
+
+  about: {
+    sectionLabel: "// 04 ABOUT & SIGNAL",
+    heading: "Engineering Assessment",
+    intro:
+      "Recruiter & collaborator overview on working philosophy and core technical strengths.",
+    cardHeading: "Bridging technical precision and editorial aesthetics.",
+    philosophyLabel: "Philosophy:",
+    philosophy:
+      "Zero unnecessary bloat, type-safe API boundaries, pixel-perfect layout.",
+    strengthsLabel: "// CORE ENGINEERING STRENGTHS",
+    strengths: [
+      {
+        title: "Full-Stack Technical Depth",
+        description:
+          "Architecting end-to-end web applications with Next.js, React, Node.js, and TypeScript.",
+      },
+      {
+        title: "Systematized UI & Design Tokens",
+        description:
+          "Bridging high-fidelity designs and robust, accessible component engines.",
+      },
+      {
+        title: "Performance & Accessibility First",
+        description:
+          "Optimized lighthouse metrics, bundle size control, and WCAG 2.1 AA compliance.",
+      },
+      {
+        title: "Editorial Visual Precision",
+        description:
+          "Crafting expressive typography, smooth micro-interactions, and kinetic animations.",
+      },
+    ],
+    statusLabel: "SIGNAL STATUS",
+    availabilityNote:
+      "Open for select full-stack contract work, design system consultations, and senior technical leadership roles.",
+    resumeCtaLabel: "Download Résumé (PDF)",
+    resumeNote: "Updated for 2026 // Includes project references",
   },
 
   metrics: [
@@ -107,6 +231,7 @@ export const portfolioContent: PortfolioContent = {
       image: "/projects/ai-storyteller.jpg",
       liveUrl: "https://ai-storyteller-silk.vercel.app/",
       githubUrl: "https://github.com/bakale-atharva/ai-storyteller",
+      layout: "standard",
     },
   ],
 
@@ -212,7 +337,7 @@ export const portfolioContent: PortfolioContent = {
     },
     {
       name: "Email",
-      url: "mailto:contact@atharva.dev",
+      url: "mailto:atharvabakale13@gmail.com",
     },
   ],
 
