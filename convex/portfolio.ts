@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import type { Doc } from "./_generated/dataModel";
 import type { MutationCtx, QueryCtx } from "./_generated/server";
+import { assertOwner } from "./lib/owner";
 import {
   aboutFields,
   heroFields,
@@ -188,9 +189,11 @@ export const getPublishedContent = query({
 });
 
 /**
- * Mutations below are intentionally unguarded — Phase 2 adds `assertOwner(ctx)`
- * to every one of them. Until then they are reachable by anyone who knows the
- * function name, same as any other Convex deployment before auth lands.
+ * Every mutation below opens with `assertOwner(ctx)`. The `/dashboard` gate
+ * (proxy.ts + the server component's three-state branch) is UX, not security
+ * — this is the actual boundary: it throws unless the caller's Clerk session
+ * email matches `OWNER_EMAIL`, so a signed-in stranger who finds these
+ * function names in the client bundle still can't call them.
  */
 
 // --- Singletons --------------------------------------------------------------
@@ -201,6 +204,7 @@ export const upsertProfile = mutation({
   args: profileFields,
   returns: v.id("profile"),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const existing = await ctx.db.query("profile").first();
     if (existing) {
       await ctx.db.patch(existing._id, args);
@@ -214,6 +218,7 @@ export const setProfileResumeStorageId = mutation({
   args: { storageId: v.union(v.id("_storage"), v.null()) },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const existing = await ctx.db.query("profile").first();
     if (!existing) throw new Error("Profile has not been seeded yet.");
     await ctx.db.patch(existing._id, {
@@ -227,6 +232,7 @@ export const upsertHero = mutation({
   args: heroFields,
   returns: v.id("hero"),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const existing = await ctx.db.query("hero").first();
     if (existing) {
       await ctx.db.patch(existing._id, args);
@@ -240,6 +246,7 @@ export const upsertAbout = mutation({
   args: aboutFields,
   returns: v.id("about"),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const existing = await ctx.db.query("about").first();
     if (existing) {
       await ctx.db.patch(existing._id, args);
@@ -253,6 +260,7 @@ export const upsertSeo = mutation({
   args: seoFields,
   returns: v.id("seo"),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const existing = await ctx.db.query("seo").first();
     if (existing) {
       await ctx.db.patch(existing._id, args);
@@ -278,6 +286,7 @@ export const createMetric = mutation({
   args: metricFields,
   returns: v.id("metrics"),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const order = await nextOrder(ctx, "metrics");
     return await ctx.db.insert("metrics", { ...args, order });
   },
@@ -287,6 +296,7 @@ export const updateMetric = mutation({
   args: { id: v.id("metrics"), ...metricFields },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const { id, ...fields } = args;
     await ctx.db.patch(id, fields);
     return null;
@@ -297,6 +307,7 @@ export const removeMetric = mutation({
   args: { id: v.id("metrics") },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await ctx.db.delete(args.id);
     return null;
   },
@@ -306,6 +317,7 @@ export const reorderMetrics = mutation({
   args: { orderedIds: v.array(v.id("metrics")) },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await Promise.all(
       args.orderedIds.map((id, order) => ctx.db.patch(id, { order })),
     );
@@ -317,6 +329,7 @@ export const createProject = mutation({
   args: projectFields,
   returns: v.id("projects"),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const order = await nextOrder(ctx, "projects");
     // New projects start unpublished so they can be staged before going live.
     return await ctx.db.insert("projects", { ...args, order, published: false });
@@ -327,6 +340,7 @@ export const updateProject = mutation({
   args: { id: v.id("projects"), ...projectFields },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const { id, ...fields } = args;
     await ctx.db.patch(id, fields);
     return null;
@@ -337,6 +351,7 @@ export const setProjectPublished = mutation({
   args: { id: v.id("projects"), published: v.boolean() },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await ctx.db.patch(args.id, { published: args.published });
     return null;
   },
@@ -346,6 +361,7 @@ export const setProjectImageStorageId = mutation({
   args: { id: v.id("projects"), storageId: v.union(v.id("_storage"), v.null()) },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await ctx.db.patch(args.id, { imageStorageId: args.storageId ?? undefined });
     return null;
   },
@@ -355,6 +371,7 @@ export const removeProject = mutation({
   args: { id: v.id("projects") },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await ctx.db.delete(args.id);
     return null;
   },
@@ -364,6 +381,7 @@ export const reorderProjects = mutation({
   args: { orderedIds: v.array(v.id("projects")) },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await Promise.all(
       args.orderedIds.map((id, order) => ctx.db.patch(id, { order })),
     );
@@ -375,6 +393,7 @@ export const createService = mutation({
   args: serviceFields,
   returns: v.id("services"),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const order = await nextOrder(ctx, "services");
     return await ctx.db.insert("services", { ...args, order });
   },
@@ -384,6 +403,7 @@ export const updateService = mutation({
   args: { docId: v.id("services"), ...serviceFields },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const { docId, ...fields } = args;
     await ctx.db.patch(docId, fields);
     return null;
@@ -394,6 +414,7 @@ export const removeService = mutation({
   args: { docId: v.id("services") },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await ctx.db.delete(args.docId);
     return null;
   },
@@ -403,6 +424,7 @@ export const reorderServices = mutation({
   args: { orderedIds: v.array(v.id("services")) },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await Promise.all(
       args.orderedIds.map((id, order) => ctx.db.patch(id, { order })),
     );
@@ -414,6 +436,7 @@ export const createSkillGroup = mutation({
   args: skillGroupFields,
   returns: v.id("skillGroups"),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const order = await nextOrder(ctx, "skillGroups");
     return await ctx.db.insert("skillGroups", { ...args, order });
   },
@@ -423,6 +446,7 @@ export const updateSkillGroup = mutation({
   args: { id: v.id("skillGroups"), ...skillGroupFields },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const { id, ...fields } = args;
     await ctx.db.patch(id, fields);
     return null;
@@ -433,6 +457,7 @@ export const removeSkillGroup = mutation({
   args: { id: v.id("skillGroups") },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await ctx.db.delete(args.id);
     return null;
   },
@@ -442,6 +467,7 @@ export const reorderSkillGroups = mutation({
   args: { orderedIds: v.array(v.id("skillGroups")) },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await Promise.all(
       args.orderedIds.map((id, order) => ctx.db.patch(id, { order })),
     );
@@ -453,6 +479,7 @@ export const createSocialLink = mutation({
   args: socialLinkFields,
   returns: v.id("socialLinks"),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const order = await nextOrder(ctx, "socialLinks");
     return await ctx.db.insert("socialLinks", { ...args, order });
   },
@@ -462,6 +489,7 @@ export const updateSocialLink = mutation({
   args: { id: v.id("socialLinks"), ...socialLinkFields },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     const { id, ...fields } = args;
     await ctx.db.patch(id, fields);
     return null;
@@ -472,6 +500,7 @@ export const removeSocialLink = mutation({
   args: { id: v.id("socialLinks") },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await ctx.db.delete(args.id);
     return null;
   },
@@ -481,6 +510,7 @@ export const reorderSocialLinks = mutation({
   args: { orderedIds: v.array(v.id("socialLinks")) },
   returns: v.null(),
   handler: async (ctx, args) => {
+    await assertOwner(ctx);
     await Promise.all(
       args.orderedIds.map((id, order) => ctx.db.patch(id, { order })),
     );

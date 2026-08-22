@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as lib_owner from "../lib/owner.js";
 import type * as portfolio from "../portfolio.js";
 import type * as seed from "../seed.js";
 import type * as validators from "../validators.js";
@@ -19,6 +20,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  "lib/owner": typeof lib_owner;
   portfolio: typeof portfolio;
   seed: typeof seed;
   validators: typeof validators;
