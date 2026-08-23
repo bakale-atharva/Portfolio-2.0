@@ -34,6 +34,12 @@ export function isOwnerEmail(
  * Throws unless the caller's Clerk session email is in `OWNER_EMAILS`. Also
  * used to gate the dashboard's own read queries — those expose unpublished
  * drafts and document ids, which are not meant for the public query surface.
+ *
+ * `identity.email` is only populated if the Clerk instance maps an `email`
+ * claim onto the session token (Clerk Dashboard → Sessions → Customize session
+ * token). Clerk does not map it by default, and without it every allowlisted
+ * account is rejected here as `Not authorized.` — see the setup steps in
+ * README.md.
  */
 export async function assertOwner(ctx: MutationCtx | QueryCtx): Promise<void> {
   const identity = await ctx.auth.getUserIdentity();

@@ -53,7 +53,39 @@ CLERK_SECRET_KEY=
 - `CONVEX_DEPLOYMENT`, `NEXT_PUBLIC_CONVEX_URL`, and `NEXT_PUBLIC_CONVEX_SITE_URL` are populated automatically the first time you run `npx convex dev` against a deployment.
 - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` come from your Clerk application's API Keys page.
 
-### 3. Run the app
+### 3. Configure Clerk auth for the dashboard
+
+`/dashboard` is gated by an email allowlist. Convex functions do not read `.env.local`, so the
+allowlist has to be set in both places:
+
+```bash
+# .env.local — for the /dashboard server-side gate
+OWNER_EMAILS=you@example.com,you+alt@example.com
+
+# the Convex deployment — for assertOwner() in convex/lib/owner.ts
+npx convex env set OWNER_EMAILS "you@example.com,you+alt@example.com"
+npx convex env set CLERK_FRONTEND_API_URL https://<your-fapi-url>
+```
+
+Two steps in the **Clerk Dashboard** have no CLI equivalent. Skipping either breaks the dashboard
+with a Convex error rather than an obvious misconfiguration message:
+
+1. **Configure → Integrations → Convex**: activate it. This maps the `aud: "convex"` claim that
+   `convex/auth.config.ts` matches on. Without it the browser sends no token at all and every
+   dashboard query fails with `Not authenticated.`
+2. **Sessions → Customize session token**: add the email claim.
+
+   ```json
+   { "email": "{{user.primary_email_address}}" }
+   ```
+
+   `assertOwner` checks `identity.email` against `OWNER_EMAILS`. This claim is *not* mapped by
+   default, and without it `identity.email` is `undefined`, so even an allowlisted account is
+   rejected with `Not authorized.`
+
+Repeat both on the production Clerk instance before deploying.
+
+### 4. Run the app
 
 Convex and Next.js run as separate processes during development:
 
