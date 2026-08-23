@@ -93,6 +93,27 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis adds `.lenis` to <html> when it initializes (desktop pointer only).
+   Native smooth scroll and Lenis fight over the same gesture, so the native
+   one steps aside wherever Lenis is actually running. Touch devices never
+   initialize Lenis and keep native smooth scrolling. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html.lenis {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
 body {
   background-color: var(--canvas);
   color: var(--ink);
@@ -123,6 +144,290 @@ body {
   animation-play-state: paused;
 }
 
+/* Act 9 — the ticker renders both an animated track and a static wrapped
+   list, and CSS picks one. Doing the choice in CSS rather than JS is what
+   lets SkillsTicker stay a Server Component with no Motion import. */
+.ticker-static {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-animated {
+    display: none;
+  }
+
+  .ticker-static {
+    display: flex;
+  }
+}
+
+/* ==========================================================================
+   Motion layer (Phase 5)
+
+   Everything below is transform / opacity / clip-path only, so it composites
+   on the GPU, with one deliberate exception called out at act 2.
+
+   Structure: every effect lives inside BOTH
+     @media (prefers-reduced-motion: no-preference)  — opt-in, not opt-out
+     @supports (animation-timeline: …)               — where scroll-driven
+   so the un-animated state is always the plain, fully visible layout. That
+   ordering matters: it means a browser that supports neither gets correct
+   static content for free rather than needing an override to undo a hidden
+   initial state.
+   ========================================================================== */
+
+/* --- Act 5: film grain ---------------------------------------------------
+   One 128px feTurbulence tile as a data URI (~300 bytes, no network request),
+   fixed so it does not scroll with content — the grain should sit on the
+   glass, not on the page. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* --- Act 6b: scroll-progress hairline -------------------------------------
+   Pure CSS scroll timeline — no rAF, no JS, no scroll listener. Degrades to
+   scaleX(0) (invisible) where scroll timelines are unsupported, which is the
+   correct fallback: a progress bar that cannot track progress should not be
+   drawn at all. */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 70;
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      animation: progress-grow linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+
+@keyframes progress-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* --- Act 1: hero line-mask reveal on load --------------------------------
+   Runs on load rather than on scroll: the hero is above the fold, so a
+   view-timeline would already be complete before it could be seen. Pure CSS
+   + per-line delay, no JS and no hydration dependency. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-line {
+    animation: line-mask 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--line-delay, 0ms);
+  }
+}
+
+@keyframes line-mask {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.25em);
+    opacity: 0;
+  }
+  to {
+    /* Negative bottom inset so descenders and focus rings are never clipped
+       once the animation settles. */
+    clip-path: inset(0 0 -25% 0);
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* --- Act 2: headline width-morph on scroll -------------------------------
+   The one effect here that is NOT composited: `font-variation-settings`
+   changes glyph advance widths, so every frame reflows the h1. It is scoped
+   as tightly as possible — a single element, and `animation-range` stops the
+   work after the first ~70vh of scroll rather than running the whole page.
+   Kept because the brief explicitly asked for it; measure before adding a
+   second one. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .headline-morph {
+      animation: wdth-morph linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 70vh;
+    }
+  }
+}
+
+@keyframes wdth-morph {
+  from {
+    font-variation-settings: "wdth" 100;
+  }
+  to {
+    font-variation-settings: "wdth" 78;
+  }
+}
+
+/* --- Act 4: per-section reveal -------------------------------------------
+   The CSS half of <Reveal>. Where view timelines exist this is the whole
+   implementation — zero JS. Firefox falls back to Motion's whileInView, see
+   components/motion/Reveal.tsx. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      /* Finish well before the element reaches the middle of the screen —
+         content should be readable by the time it is comfortably in view. */
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --- Act 3: sticky-stacking recede ---------------------------------------
+   Phase 4 built the sticky layout; this is the scroll-driven half.
+
+   The timeline is declared on `.stack-item` (normal flow, scrolls past the
+   viewport) and consumed by `.stack-sticky` (pinned, so its own view()
+   progress would stall while it is stuck). Named view timelines resolve on
+   ancestors, which is exactly the escape hatch that situation needs. */
+.stack-item {
+  view-timeline-name: --stack-card;
+  view-timeline-axis: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .stack-sticky {
+      animation: card-recede linear both;
+      animation-timeline: --stack-card;
+      animation-range: exit 0% exit 100%;
+    }
+  }
+}
+
+@keyframes card-recede {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.94);
+    opacity: 0.55;
+  }
+}
+
+/* --- Act 10: project image clip-path wipe --------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .img-wipe {
+      animation: img-wipe-in linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 30%;
+    }
+  }
+}
+
+@keyframes img-wipe-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* --- Act 7: custom cursor -------------------------------------------------
+   Mounted only where `pointer: fine` matches (see CustomCursor.tsx), but the
+   media query is repeated here so the element can never paint on a touch
+   device even for the frame before JS decides. */
+.cursor-dot {
+  display: none;
+}
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .cursor-dot {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 28px;
+    height: 28px;
+    margin: -14px 0 0 -14px;
+    border: 1px solid var(--accent);
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 80;
+    opacity: 0;
+    /* Only `scale` transitions — position is driven per-frame by transform
+       in a rAF loop and must not be eased twice. */
+    transition:
+      scale 180ms ease-out,
+      opacity 180ms ease-out,
+      background-color 180ms ease-out;
+    will-change: transform;
+  }
+
+  .cursor-dot[data-visible="true"] {
+    opacity: 1;
+  }
+
+  /* Swell over anything interactive. */
+  .cursor-dot[data-swell="true"] {
+    scale: 1.8;
+    background-color: color-mix(in oklab, var(--accent) 15%, transparent);
+  }
+}
+
+/* --- Act 8: magnetic CTAs -------------------------------------------------
+   `will-change` is applied only while the pointer is actually inside the
+   element (toggled by the component), never permanently — a page-wide
+   standing `will-change: transform` costs GPU memory for no benefit. */
+.magnetic {
+  display: inline-flex;
+}
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .magnetic {
+    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .magnetic[data-engaged="true"] {
+    transition-duration: 80ms;
+  }
+}
+
+/* --- Below-fold rendering -------------------------------------------------
+   `content-visibility: auto` lets the browser skip layout and paint for
+   sections that are off-screen. Deliberately NOT applied to the projects
+   section: it contains position:sticky children and view timelines, and
+   skipping their layout breaks both. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
 /* Reduced motion global overrides */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -135,5 +440,30 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Scroll-driven animations are paced by a timeline, not by
+     `animation-duration`, so the blanket override above does not neutralize
+     them. Every motion-layer effect is already gated behind
+     `prefers-reduced-motion: no-preference`, so this is belt-and-braces —
+     it guarantees the resting, fully-visible state even if a rule above is
+     ever added without its gate. */
+  .reveal,
+  .hero-line,
+  .headline-morph,
+  .stack-sticky,
+  .img-wipe,
+  .scroll-progress {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    font-variation-settings: normal !important;
+  }
+
+  .scroll-progress,
+  .cursor-dot,
+  .grain {
+    display: none !important;
   }
 }

@@ -29,22 +29,25 @@ export function Projects({ projects }: ProjectsProps) {
         </Reveal>
 
         {/*
-          Structural sticky-stacking: each card pins under the sticky header
-          as you scroll, and the next card scrolls up to cover it — pure CSS
-          `position: sticky`, no JS. The scroll-driven scale/opacity fade on
-          the card being covered is Phase 5's job (act #3 in the motion
-          layer); this is the layout it plugs into.
+          Sticky-stacking (act 3). Each card pins under the sticky header and
+          the next one scrolls up to cover it, while the covered card recedes
+          — scale + opacity, both composited, both driven by a CSS view
+          timeline with no JS.
+
+          The two-element split is load-bearing: `.stack-item` stays in normal
+          flow and owns the `view-timeline-name`, because a pinned element's
+          own view() progress stalls while it is stuck to the top. The sticky
+          child then reads that ancestor timeline. See globals.css.
         */}
         <div>
           {projects.map((project, index) => (
-            <div
-              key={project.slug}
-              className="sticky top-20 md:top-24 pb-8 md:pb-12"
-              style={{ zIndex: index + 1 }}
-            >
-              <Reveal yOffset={30}>
+            <div key={project.slug} className="stack-item">
+              <div
+                className="stack-sticky sticky top-20 md:top-24 pb-8 md:pb-12"
+                style={{ zIndex: index + 1 }}
+              >
                 <ProjectCard project={project} index={index} />
-              </Reveal>
+              </div>
             </div>
           ))}
         </div>

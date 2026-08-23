@@ -1,5 +1,5 @@
 import { HeroContent, Profile } from "@/lib/content";
-import { Reveal } from "@/components/motion/Reveal";
+import { Magnetic } from "@/components/motion/Magnetic";
 import {
   ArrowDownRight,
   Sparkles,
@@ -22,29 +22,34 @@ export function Hero({ profile, hero }: HeroProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Column: Headline & Bio */}
+          {/* Left Column: Headline & Bio.
+
+              These use the CSS load reveal (act 1), not <Reveal>: the hero is
+              above the fold, so a view-timeline would already have run to
+              completion before anyone could see it. `--line-delay` staggers
+              the lines; the whole thing is CSS, so it plays before hydration. */}
           <div className="lg:col-span-7 flex flex-col justify-between space-y-8">
-            <Reveal yOffset={30} delay={0.1}>
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold font-display text-ink leading-[0.95] tracking-tighter uppercase">
+            <div className="hero-line" style={{ "--line-delay": "80ms" } as React.CSSProperties}>
+              <h1 className="headline-morph text-5xl sm:text-7xl lg:text-8xl font-bold font-display text-ink leading-[0.95] tracking-tighter uppercase">
                 {hero.headlineLead}{" "}
                 <span className="font-accent italic font-normal normal-case text-accent tracking-normal">
                   {hero.headlineAccent}
                 </span>{" "}
                 {hero.headlineTrail}
               </h1>
-            </Reveal>
+            </div>
 
-            <Reveal yOffset={20} delay={0.2}>
+            <div className="hero-line" style={{ "--line-delay": "220ms" } as React.CSSProperties}>
               <p className="text-lg sm:text-xl text-muted font-display max-w-2xl leading-relaxed">
                 {profile.tagline}
               </p>
               <p className="text-base sm:text-lg text-muted/80 font-display mt-3 max-w-xl leading-relaxed">
                 {profile.bio}
               </p>
-            </Reveal>
+            </div>
 
             {/* Meta status info & CTAs */}
-            <Reveal yOffset={20} delay={0.3}>
+            <div className="hero-line" style={{ "--line-delay": "340ms" } as React.CSSProperties}>
               <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-muted py-2">
                 <div className="flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-ink" />
@@ -58,28 +63,35 @@ export function Hero({ profile, hero }: HeroProps) {
               </div>
 
               <div className="flex flex-wrap items-center gap-4 pt-4">
-                <a
-                  href={hero.primaryCta.href}
-                  className="inline-flex items-center gap-2 bg-ink text-canvas hover:bg-ink/90 font-mono text-xs font-semibold uppercase px-6 py-4 rounded-full transition-all active:scale-95 touch-target shadow-sm"
-                >
-                  <span>{hero.primaryCta.label}</span>
-                  <ArrowDownRight className="w-4 h-4 text-accent" />
-                </a>
+                <Magnetic>
+                  <a
+                    href={hero.primaryCta.href}
+                    className="inline-flex items-center gap-2 bg-ink text-canvas hover:bg-ink/90 font-mono text-xs font-semibold uppercase px-6 py-4 rounded-full transition active:scale-95 touch-target shadow-sm"
+                  >
+                    <span>{hero.primaryCta.label}</span>
+                    <ArrowDownRight className="w-4 h-4 text-accent" />
+                  </a>
+                </Magnetic>
 
-                <a
-                  href={hero.secondaryCta.href}
-                  className="inline-flex items-center gap-2 border border-hairline bg-surface/70 hover:bg-surface text-ink font-mono text-xs font-semibold uppercase px-6 py-4 rounded-full transition-all touch-target"
-                >
-                  <span>{hero.secondaryCta.label}</span>
-                  <Sparkles className="w-4 h-4 text-ink" />
-                </a>
+                <Magnetic>
+                  <a
+                    href={hero.secondaryCta.href}
+                    className="inline-flex items-center gap-2 border border-hairline bg-surface/70 hover:bg-surface text-ink font-mono text-xs font-semibold uppercase px-6 py-4 rounded-full transition touch-target"
+                  >
+                    <span>{hero.secondaryCta.label}</span>
+                    <Sparkles className="w-4 h-4 text-ink" />
+                  </a>
+                </Magnetic>
               </div>
-            </Reveal>
+            </div>
           </div>
 
           {/* Right Column: Editorial Technical Composition Panel */}
           <div className="lg:col-span-5">
-            <Reveal yOffset={40} delay={0.25}>
+            <div
+              className="hero-line"
+              style={{ "--line-delay": "280ms" } as React.CSSProperties}
+            >
               <div className="relative border border-hairline bg-surface text-ink rounded-2xl p-6 sm:p-8 shadow-2xl overflow-hidden group">
                 {/* Visual Header / Window bar */}
                 <div className="flex items-center justify-between border-b border-hairline pb-4 mb-6 font-mono text-xs text-muted">
@@ -153,9 +165,9 @@ export function Hero({ profile, hero }: HeroProps) {
                 </div>
 
                 {/* Subtle corner badge */}
-                <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-accent/10 rounded-full blur-2xl pointer-events-none group-hover:bg-accent/20 transition-all" />
+                <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-accent/10 rounded-full blur-2xl pointer-events-none group-hover:bg-accent/20 transition-colors" />
               </div>
-            </Reveal>
+            </div>
           </div>
         </div>
       </div>

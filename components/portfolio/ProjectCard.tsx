@@ -40,7 +40,10 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 }`
           }`}
         >
-          <div className="relative w-full h-64 sm:h-72 lg:h-80 rounded-xl overflow-hidden shadow-inner border border-hairline/60 bg-ink/5">
+          {/* `img-wipe` is act 10: a clip-path reveal driven by a view
+              timeline as the card enters. Sits on the frame rather than the
+              <Image> so the hover scale-up underneath is unaffected. */}
+          <div className="img-wipe relative w-full h-64 sm:h-72 lg:h-80 rounded-xl overflow-hidden shadow-inner border border-hairline/60 bg-ink/5">
             <Image
               src={project.image}
               alt={project.title}
