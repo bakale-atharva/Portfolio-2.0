@@ -10,10 +10,6 @@
 @theme inline {
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
-  /* The one accent-word face — used nowhere else. Distinct name from the
-     raw `--font-serif` next/font sets on <html>, same as font-display/
-     font-archivo below, so this isn't a self-reference. */
-  --font-accent: var(--font-serif), Georgia, serif;
 
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
@@ -22,50 +18,73 @@
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
   --color-hairline: var(--hairline);
+  --color-rule: var(--rule);
+  --color-danger: var(--danger);
+
+  /* Exploded View draws with one line weight and flat fills: no rounding,
+     no elevation. Overriding the theme scales flattens every utility that
+     still names a radius or shadow, including the dashboard's. `rounded-full`
+     is a literal and stays, reserved for the circled step numerals. */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+  --radius-4xl: 0;
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 #0000;
+  --shadow-xl: 0 0 #0000;
+  --shadow-2xl: 0 0 #0000;
 
   --animate-fade-in: fade-in 0.3s ease-out both;
   --animate-marquee: marquee 25s linear infinite;
 }
 
-/* Dark is the default theme (Nocturne Editorial) — :root carries the dark
-   palette directly rather than living under [data-theme="dark"], so a
-   visitor with no stored preference and no explicit OS light-mode signal
-   gets dark with zero extra selector specificity or FOUC risk. */
+/* Light is the default: the manual is a printed sheet read in daylight at a
+   desk. The night sheet is [data-theme="dark"] (and the OS preference for
+   visitors with no JS). Accent yellow is a fill, never text, so its
+   foreground is always graphite. */
 :root {
-  --canvas: #0b0b0a;
-  --surface: #141412;
-  --ink: #f3f0e8;
-  --muted: #8a887f;
-  --accent: #c7ff3d;
-  /* Accent is light in both themes, so its foreground is always near-black. */
-  --on-accent: #11110f;
-  --hairline: rgba(243, 240, 232, 0.14);
-  color-scheme: dark;
-}
-
-[data-theme="light"] {
-  --canvas: #f3f0e8;
-  --surface: #faf8f2;
-  --ink: #11110f;
-  --muted: #66655f;
-  --accent: #c7ff3d;
-  --on-accent: #11110f;
-  --hairline: rgba(17, 17, 15, 0.18);
+  --canvas: #f3f3ee;
+  --surface: #fbfbf8;
+  --ink: #16181b;
+  --muted: #565a5e;
+  --accent: #ffd21f;
+  --on-accent: #16181b;
+  --hairline: rgba(22, 24, 27, 0.55);
+  --rule: rgba(22, 24, 27, 0.16);
+  --danger: #b3261e;
   color-scheme: light;
 }
 
+[data-theme="dark"] {
+  --canvas: #131517;
+  --surface: #1b1e21;
+  --ink: #f1f1ea;
+  --muted: #a5a8a2;
+  --hairline: rgba(241, 241, 234, 0.55);
+  --rule: rgba(241, 241, 234, 0.16);
+  --danger: #ff8a80;
+  color-scheme: dark;
+}
+
 /* No-JS fallback only. Once the inline script runs, [data-theme] is always
-   present and this block is inert. Dark is already :root's default, so the
-   only case to handle here is an OS that explicitly prefers light. */
-@media (prefers-color-scheme: light) {
+   present and this block is inert. */
+@media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --canvas: #f3f0e8;
-    --surface: #faf8f2;
-    --ink: #11110f;
-    --muted: #66655f;
-    --accent: #c7ff3d;
-    --hairline: rgba(17, 17, 15, 0.18);
-    color-scheme: light;
+    --canvas: #131517;
+    --surface: #1b1e21;
+    --ink: #f1f1ea;
+    --muted: #a5a8a2;
+    --hairline: rgba(241, 241, 234, 0.55);
+    --rule: rgba(241, 241, 234, 0.16);
+    --danger: #ff8a80;
+    color-scheme: dark;
   }
 }
 
@@ -120,13 +139,79 @@ body {
   font-family: var(--font-display);
   margin: 0;
   padding: 0;
+  caret-color: var(--ink);
+  accent-color: var(--ink);
 }
 
-/* Focus ring styles */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* Part numbers, dimensions, and tabular readouts stay column-aligned. */
+.font-mono,
+code {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Browser surfaces, drawn from the palette: selection is the yellow part
+   highlight, scrollbars are thin ruled lines. */
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink) var(--canvas);
+}
+
+/* Focus ring: a graphite line with a yellow halo, readable on paper, on
+   yellow fills, and on the night sheet. */
 :focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px var(--accent);
+  box-shadow: 0 0 0 5px var(--accent);
+}
+
+/* --- Exploded View primitives ---------------------------------------------
+   One line weight (2px) and circled step numerals are the whole vocabulary. */
+.line-box {
+  border: 2px solid var(--ink);
+}
+
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 2px solid var(--ink);
+  border-radius: 9999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.375rem;
+  line-height: 1;
+}
+
+/* The accent word in the hero: a yellow part highlight, not coloured text. */
+.mark-block {
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 0 0.12em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Dashed guide line between exploded parts. */
+.guide-dash {
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-dasharray: 3 7;
 }
 
 /* Touch targets */
@@ -185,7 +270,7 @@ body {
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.03;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;
 }
@@ -200,9 +285,9 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
+  height: 3px;
   z-index: 70;
-  background-color: var(--accent);
+  background-color: var(--ink);
   transform: scaleX(0);
   transform-origin: 0 50%;
   pointer-events: none;
@@ -271,10 +356,10 @@ body {
 
 @keyframes wdth-morph {
   from {
-    font-variation-settings: "wdth" 100;
+    font-variation-settings: "wdth" 90;
   }
   to {
-    font-variation-settings: "wdth" 78;
+    font-variation-settings: "wdth" 70;
   }
 }
 
@@ -358,6 +443,29 @@ body {
   }
 }
 
+/* --- Exploded layers (extends act 3's scroll-timeline vocabulary) ---------
+   The hero's stack starts in its exploded pose (that is the static, reduced
+   motion state) and the layers travel further apart over the first 80vh of
+   scroll, each at its own rate, like multiplane depth. Transform only. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .explode-layer {
+      animation: explode-out linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 80vh;
+    }
+  }
+}
+
+@keyframes explode-out {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(var(--explode-y, 0px));
+  }
+}
+
 /* --- Act 7: custom cursor -------------------------------------------------
    Mounted only where `pointer: fine` matches (see CustomCursor.tsx), but the
    media query is repeated here so the element can never paint on a touch
@@ -375,7 +483,7 @@ body {
     width: 28px;
     height: 28px;
     margin: -14px 0 0 -14px;
-    border: 1px solid var(--accent);
+    border: 2px solid var(--ink);
     border-radius: 9999px;
     pointer-events: none;
     z-index: 80;
@@ -396,7 +504,7 @@ body {
   /* Swell over anything interactive. */
   .cursor-dot[data-swell="true"] {
     scale: 1.8;
-    background-color: color-mix(in oklab, var(--accent) 15%, transparent);
+    background-color: color-mix(in oklab, var(--accent) 70%, transparent);
   }
 }
 
@@ -453,6 +561,7 @@ body {
   .headline-morph,
   .stack-sticky,
   .img-wipe,
+  .explode-layer,
   .scroll-progress {
     animation: none !important;
     opacity: 1 !important;

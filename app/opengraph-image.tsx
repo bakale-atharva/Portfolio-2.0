@@ -11,6 +11,12 @@ export const size = {
 
 export const contentType = 'image/png';
 
+// Satori cannot read CSS variables, so the Exploded View palette (see
+// globals.css :root) is mirrored here as constants: paper, graphite, signal.
+const PAPER = '#F3F3EE';
+const INK = '#16181B';
+const SIGNAL = '#FFD21F';
+
 export default async function Image() {
   const content = await getPortfolioContent();
   const profile = content?.profile ?? {
@@ -26,63 +32,65 @@ export default async function Image() {
     (
       <div
         style={{
-          background: '#11110F',
+          background: SIGNAL,
           width: '100%',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '60px',
+          padding: '56px',
           fontFamily: 'sans-serif',
-          color: '#F3F0E8',
-          border: '12px solid #C7FF3D',
+          color: INK,
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderBottom: `4px solid ${INK}`,
+            paddingBottom: '20px',
+          }}
+        >
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
-              background: '#F3F0E8',
-              color: '#11110F',
-              padding: '10px 20px',
-              borderRadius: '999px',
-              fontSize: '20px',
-              fontWeight: 700,
+              border: `4px solid ${INK}`,
+              background: PAPER,
+              padding: '8px 18px',
+              fontSize: '28px',
+              fontWeight: 900,
             }}
           >
-            <div
-              style={{
-                width: '12px',
-                height: '12px',
-                borderRadius: '50%',
-                background: '#C7FF3D',
-              }}
-            />
-            {`${profile.monogram} // EDITORIAL CIRCUIT`}
+            {profile.monogram}
           </div>
           <div
             style={{
-              fontSize: '18px',
-              color: '#C7FF3D',
-              letterSpacing: '2px',
-              fontWeight: 600,
+              fontSize: '22px',
+              letterSpacing: '3px',
+              fontWeight: 800,
             }}
           >
             {profile.availability.toUpperCase()}
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ fontSize: '56px', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-1px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          <div
+            style={{
+              fontSize: '120px',
+              fontWeight: 900,
+              lineHeight: 0.95,
+              letterSpacing: '-3px',
+              textTransform: 'uppercase',
+            }}
+          >
             {profile.name}
           </div>
-          <div style={{ fontSize: '28px', color: '#66655F', maxWidth: '800px' }}>
+          <div style={{ fontSize: '34px', fontWeight: 700, maxWidth: '900px' }}>
             {profile.role}
-          </div>
-          <div style={{ fontSize: '22px', color: '#C7FF3D', marginTop: '12px' }}>
-            {profile.tagline}
           </div>
         </div>
 
@@ -91,14 +99,23 @@ export default async function Image() {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            borderTop: '1px solid rgba(243, 240, 232, 0.2)',
-            paddingTop: '24px',
-            fontSize: '18px',
-            color: '#66655F',
+            borderTop: `4px solid ${INK}`,
+            paddingTop: '20px',
+            fontSize: '22px',
+            fontWeight: 700,
           }}
         >
           <div>{profile.location.toUpperCase()}</div>
-          <div>NEXT.JS 16 • TAILWIND V4 • TYPESCRIPT</div>
+          <div
+            style={{
+              display: 'flex',
+              background: INK,
+              color: PAPER,
+              padding: '6px 16px',
+            }}
+          >
+            NEXT.JS 16 • TAILWIND V4 • TYPESCRIPT
+          </div>
         </div>
       </div>
     ),

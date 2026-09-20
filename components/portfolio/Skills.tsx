@@ -1,98 +1,86 @@
-import React from 'react';
-import { SkillGroup } from '@/lib/content';
-import { Reveal } from '@/components/motion/Reveal';
-import { SkillsTicker } from '@/components/motion/SkillsTicker';
-import { Code2, Layout, Server, Cpu } from 'lucide-react';
+import { SkillGroup } from "@/lib/content";
+import { Reveal } from "@/components/motion/Reveal";
+import { SkillsTicker } from "@/components/motion/SkillsTicker";
+import { Container } from "@/components/portfolio/Container";
+import { SectionHeader } from "@/components/portfolio/SectionHeader";
+import { Code2, Layout, Server, Cpu } from "lucide-react";
 
 interface SkillsProps {
   skillGroups: SkillGroup[];
 }
 
+const ICON_CLASS = "w-5 h-5 text-ink";
+
+function getCategoryIcon(category: string) {
+  switch (category.toLowerCase()) {
+    case "frontend":
+      return <Code2 className={ICON_CLASS} />;
+    case "product":
+      return <Layout className={ICON_CLASS} />;
+    case "backend & edge":
+      return <Server className={ICON_CLASS} />;
+    case "workflow":
+      return <Cpu className={ICON_CLASS} />;
+    default:
+      return <Code2 className={ICON_CLASS} />;
+  }
+}
+
 export function Skills({ skillGroups }: SkillsProps) {
   // Collect all skills for the kinetic ticker marquee
   const allSkills = Array.from(
-    new Set(skillGroups.flatMap((group) => group.skills))
+    new Set(skillGroups.flatMap((group) => group.skills)),
   );
 
-  const getCategoryIcon = (category: string) => {
-    switch (category.toLowerCase()) {
-      case 'frontend':
-        return <Code2 className="w-5 h-5 text-accent" />;
-      case 'product':
-        return <Layout className="w-5 h-5 text-accent" />;
-      case 'backend & edge':
-        return <Server className="w-5 h-5 text-accent" />;
-      case 'workflow':
-        return <Cpu className="w-5 h-5 text-accent" />;
-      default:
-        return <Code2 className="w-5 h-5 text-accent" />;
-    }
-  };
-
   return (
-    <section id="skills" className="py-20 md:py-28 border-b border-hairline bg-canvas">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        {/* Section Header */}
-        <Reveal yOffset={20}>
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 pb-6 border-b border-hairline">
-            <div>
-              <span className="font-mono text-xs tracking-widest uppercase text-muted">
-                {"// 03 TECHNICAL CAPABILITIES"}
-              </span>
-              <h2 className="text-4xl sm:text-6xl font-bold font-display text-ink uppercase tracking-tighter mt-2">
-                Stack & Disciplines
-              </h2>
-            </div>
-            <p className="font-mono text-xs text-muted mt-4 md:mt-0 max-w-xs">
-              Full-spectrum technical execution from front-end design systems to edge backend logic.
-            </p>
-          </div>
-        </Reveal>
+    <section id="skills" className="pt-20 md:pt-28 border-b-2 border-ink bg-canvas">
+      <Container className="mb-20 md:mb-28">
+        <SectionHeader
+          label="// 03 TECHNICAL CAPABILITIES"
+          title="Stack & Disciplines"
+          blurb="Full-spectrum technical execution from front-end design systems to edge backend logic."
+        />
 
-        {/* 4-column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Parts list: one ruled grid, each discipline a bordered cell. */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-2 border-ink divide-y-2 sm:divide-y-0 sm:divide-x-2 divide-ink bg-surface">
           {skillGroups.map((group, index) => (
             <Reveal key={group.category} yOffset={30} delay={index * 0.1}>
-              <div className="h-full border border-hairline bg-surface/70 hover:bg-surface hover:border-accent/40 p-6 rounded-2xl transition-all duration-300 shadow-sm flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-3 border-b border-hairline pb-4 mb-4">
-                    <div className="w-9 h-9 rounded-lg bg-canvas border border-hairline flex items-center justify-center">
-                      {getCategoryIcon(group.category)}
-                    </div>
-                    <div>
-                      <span className="font-mono text-[10px] uppercase text-muted block">
-                        DISCIPLINE {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <h3 className="font-display font-bold text-ink uppercase text-base">
-                        {group.category}
-                      </h3>
-                    </div>
+              <div className="h-full p-6">
+                <div className="flex items-center gap-3 border-b-2 border-ink pb-4 mb-4">
+                  <div className="w-10 h-10 border-2 border-ink bg-accent flex items-center justify-center shrink-0">
+                    {getCategoryIcon(group.category)}
                   </div>
-
-                  <ul className="space-y-2.5">
-                    {group.skills.map((skill) => (
-                      <li
-                        key={skill}
-                        className="font-mono text-xs text-muted flex items-center gap-2"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent border border-ink/20" />
-                        <span>{skill}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div>
+                    <span className="font-mono text-[11px] uppercase text-muted block">
+                      DISCIPLINE {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="font-display font-black text-ink uppercase text-lg leading-tight">
+                      {group.category}
+                    </h3>
+                  </div>
                 </div>
+
+                <ul className="space-y-2.5">
+                  {group.skills.map((skill) => (
+                    <li
+                      key={skill}
+                      className="text-sm text-ink flex items-center gap-2.5"
+                    >
+                      <span className="w-2 h-2 bg-ink shrink-0" />
+                      <span>{skill}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </Reveal>
           ))}
         </div>
-      </div>
+      </Container>
 
-      {/* Kinetic Infinite Ticker Band — a deliberate inverted contrast band,
-          not a "panel"; it's meant to read as a rhythm break in both
-          themes, so it stays on the ink-inversion trick the surface cards
-          above just moved away from. */}
+      {/* Kinetic ticker band: the page's one full-yellow moment, a rhythm
+          break between the parts list and the About sheet. */}
       <Reveal yOffset={20}>
-        <SkillsTicker skills={allSkills} />
+        <SkillsTicker skills={allSkills} className="border-t-2 border-ink" />
       </Reveal>
     </section>
   );

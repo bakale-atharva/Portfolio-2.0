@@ -50,7 +50,7 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
       aria-label={
         theme === "dark" ? "Switch to light theme" : "Switch to dark theme"
       }
-      className={`inline-flex items-center justify-center p-2 rounded-full border border-hairline bg-surface/50 hover:bg-surface text-ink transition-colors touch-target ${className}`}
+      className={`inline-flex items-center justify-center w-11 h-11 border-2 border-ink bg-canvas hover:bg-accent hover:text-on-accent text-ink transition-colors touch-target ${className}`}
     >
       {theme === "dark" ? (
         <Sun className="w-4 h-4" />

@@ -1,7 +1,8 @@
-import React from 'react';
-import { Service } from '@/lib/content';
-import { Reveal } from '@/components/motion/Reveal';
-import { Check, ArrowRight } from 'lucide-react';
+import { Service } from "@/lib/content";
+import { Reveal } from "@/components/motion/Reveal";
+import { Container } from "@/components/portfolio/Container";
+import { SectionHeader } from "@/components/portfolio/SectionHeader";
+import { Check, ArrowRight } from "lucide-react";
 
 interface ServicesProps {
   services: Service[];
@@ -9,73 +10,56 @@ interface ServicesProps {
 
 export function Services({ services }: ServicesProps) {
   return (
-    <section id="services" className="py-20 md:py-28 border-b border-hairline bg-canvas">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <Reveal yOffset={20}>
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 pb-6 border-b border-hairline">
-            <div>
-              <span className="font-mono text-xs tracking-widest uppercase text-muted">
-                {"// 02 SERVICES & OFFERS"}
-              </span>
-              <h2 className="text-4xl sm:text-6xl font-bold font-display text-ink uppercase tracking-tighter mt-2">
-                Specialized Capabilities
-              </h2>
-            </div>
-            <p className="font-mono text-xs text-muted mt-4 md:mt-0 max-w-xs">
-              Tailored engineering and architecture services for teams demanding precision and speed.
-            </p>
-          </div>
-        </Reveal>
+    <section id="services" className="py-20 md:py-28 border-b-2 border-ink bg-canvas">
+      <Container>
+        <SectionHeader
+          label="// 02 SERVICES & OFFERS"
+          title="Specialized Capabilities"
+          blurb="Tailored engineering and architecture services for teams demanding precision and speed."
+        />
 
-        {/* Elevated surface cards — canvas is already dark by default, so
-            these read as raised panels without the old always-black-card
-            trick, which would invert to a light card once dark became the
-            default theme. */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Three parts on one sheet: ruled columns that share their borders,
+            not three floating cards. */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 border-2 border-ink divide-y-2 lg:divide-y-0 lg:divide-x-2 divide-ink bg-surface">
           {services.map((service, index) => (
             <Reveal key={service.id} yOffset={30} delay={index * 0.1}>
-              <div className="h-full flex flex-col justify-between border border-hairline bg-surface text-ink p-8 rounded-2xl relative group overflow-hidden shadow-xl hover:border-accent/50 transition-all duration-300">
+              <div className="h-full flex flex-col justify-between text-ink p-6 sm:p-8">
                 <div>
-                  {/* Card Number */}
-                  <div className="flex items-center justify-between border-b border-hairline pb-6 mb-6">
-                    <span className="font-mono text-4xl font-bold text-accent">
-                      {service.id}
-                    </span>
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted border border-hairline px-2.5 py-1 rounded-full">
+                  <div className="flex items-center justify-between border-b-2 border-ink pb-5 mb-6">
+                    <span className="step-badge">{Number(service.id) || service.id}</span>
+                    <span className="font-mono text-[11px] uppercase tracking-widest text-ink border border-ink px-2 py-1">
                       STUDIO OFFER
                     </span>
                   </div>
 
-                  {/* Title & Description */}
-                  <h3 className="text-2xl font-bold font-display text-ink mb-4 uppercase">
+                  <h3 className="text-2xl sm:text-3xl font-black font-display text-ink mb-4 uppercase tracking-[-0.02em] leading-none">
                     {service.title}
                   </h3>
-                  <p className="text-sm font-display text-muted leading-relaxed mb-8">
+                  <p className="text-base text-muted leading-relaxed mb-8">
                     {service.description}
                   </p>
 
-                  {/* Deliverables List */}
-                  <div className="space-y-3 mb-8 border-t border-hairline pt-6">
-                    <span className="font-mono text-xs uppercase tracking-wider text-accent font-semibold block mb-4">
+                  <div className="space-y-3 mb-8 border-t border-rule pt-6">
+                    <h4 className="font-mono text-xs uppercase tracking-wider text-ink font-bold mb-4">
                       {"// KEY DELIVERABLES"}
-                    </span>
-                    {service.deliverables.map((item) => (
-                      <div key={item} className="flex items-start gap-3 text-xs font-mono text-ink/80">
-                        <span className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center text-accent shrink-0 mt-0.5">
-                          <Check className="w-2.5 h-2.5" />
-                        </span>
-                        <span>{item}</span>
-                      </div>
-                    ))}
+                    </h4>
+                    <ul className="space-y-3">
+                      {service.deliverables.map((item) => (
+                        <li key={item} className="flex items-start gap-3 text-sm text-ink">
+                          <span className="w-5 h-5 border-2 border-ink bg-accent flex items-center justify-center shrink-0 mt-0.5">
+                            <Check className="w-3 h-3 text-on-accent" strokeWidth={3} />
+                          </span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
 
-                {/* CTA Button */}
-                <div className="pt-6 border-t border-hairline">
+                <div className="pt-6 border-t-2 border-ink">
                   <a
                     href="#contact"
-                    className="w-full inline-flex items-center justify-center gap-2 bg-canvas hover:bg-accent hover:text-on-accent text-ink font-mono text-xs font-semibold uppercase py-3.5 px-4 rounded-full transition-all touch-target"
+                    className="w-full inline-flex items-center justify-center gap-2 border-2 border-ink bg-canvas hover:bg-accent hover:text-on-accent text-ink font-mono text-xs font-bold uppercase h-12 px-4 transition-colors touch-target"
                   >
                     <span>{service.ctaText}</span>
                     <ArrowRight className="w-4 h-4" />
@@ -85,7 +69,7 @@ export function Services({ services }: ServicesProps) {
             </Reveal>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

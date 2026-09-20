@@ -14,7 +14,7 @@ export function Field({
   return (
     <label
       htmlFor={htmlFor}
-      className="flex flex-col gap-1.5 font-mono text-xs uppercase tracking-wider text-muted"
+      className="flex flex-col gap-1.5 font-mono text-xs font-bold uppercase tracking-wider text-ink"
     >
       {label}
       {children}
@@ -23,7 +23,7 @@ export function Field({
 }
 
 const inputClass =
-  "font-sans normal-case tracking-normal text-sm bg-canvas border border-hairline rounded-md px-3 py-2 text-ink focus:outline-none focus:border-accent";
+  "font-display normal-case font-normal tracking-normal text-sm bg-surface border-2 border-ink px-3 py-2 text-ink placeholder:text-muted focus-visible:bg-canvas";
 
 export function TextInput(
   props: React.InputHTMLAttributes<HTMLInputElement>,
@@ -51,15 +51,16 @@ export function Button({
 }) {
   const variants = {
     default:
-      "border border-hairline hover:bg-surface text-ink",
-    primary: "bg-accent text-on-accent hover:bg-accent/90",
+      "border-2 border-ink bg-canvas text-ink hover:bg-accent hover:text-on-accent",
+    primary:
+      "border-2 border-ink bg-accent text-on-accent hover:bg-ink hover:text-canvas",
     danger:
-      "border border-hairline text-ink hover:border-red-400 hover:text-red-500",
+      "border-2 border-ink bg-canvas text-ink hover:bg-danger hover:text-canvas hover:border-danger",
   };
   return (
     <button
       {...props}
-      className={`font-mono text-xs uppercase tracking-wider px-3 py-1.5 rounded-full transition-colors disabled:opacity-40 disabled:pointer-events-none touch-target ${variants[variant]} ${className}`}
+      className={`font-mono text-xs font-bold uppercase tracking-wider px-3 py-1.5 transition-colors disabled:opacity-40 disabled:pointer-events-none touch-target ${variants[variant]} ${className}`}
     />
   );
 }
@@ -74,11 +75,13 @@ export function SectionCard({
   children: ReactNode;
 }) {
   return (
-    <section className="border border-hairline rounded-lg bg-surface/60 p-5 space-y-4">
-      <div>
-        <h2 className="text-lg font-display font-bold">{title}</h2>
+    <section className="border-2 border-ink bg-surface p-5 space-y-4">
+      <div className="border-b-2 border-ink pb-3">
+        <h2 className="text-xl font-display font-black uppercase tracking-[-0.02em]">
+          {title}
+        </h2>
         {description && (
-          <p className="text-xs text-muted mt-0.5">{description}</p>
+          <p className="text-sm text-muted mt-1">{description}</p>
         )}
       </div>
       {children}
@@ -92,10 +95,18 @@ export function SaveStatus({ state }: { state: SaveState }) {
   if (state === "idle") return null;
   const label =
     state === "saving" ? "Saving…" : state === "saved" ? "Saved" : "Failed to save";
-  const color =
-    state === "error" ? "text-red-500" : state === "saved" ? "text-accent" : "text-muted";
+  // Yellow is a fill in this system, never text: "saved" gets a yellow chip.
+  const tone =
+    state === "error"
+      ? "text-danger"
+      : state === "saved"
+        ? "bg-accent text-on-accent border-2 border-ink px-2 py-0.5"
+        : "text-muted";
   return (
-    <span className={`font-mono text-xs uppercase tracking-wider ${color}`}>
+    <span
+      role="status"
+      className={`font-mono text-xs font-bold uppercase tracking-wider ${tone}`}
+    >
       {label}
     </span>
   );

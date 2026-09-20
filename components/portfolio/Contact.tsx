@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { Profile, SocialLink } from '@/lib/content';
 import { Reveal } from '@/components/motion/Reveal';
+import { Container } from '@/components/portfolio/Container';
+import { SectionHeader } from '@/components/portfolio/SectionHeader';
 import { Copy, Check, Mail, ArrowUpRight } from 'lucide-react';
 
 interface ContactProps {
@@ -24,42 +26,34 @@ export function Contact({ profile, socialLinks }: ContactProps) {
   };
 
   return (
-    <section id="contact" className="py-20 md:py-32 border-b border-hairline bg-canvas relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header Tag */}
-        <Reveal yOffset={20}>
-          <div className="mb-12 border-b border-hairline pb-6">
-            <span className="font-mono text-xs tracking-widest uppercase text-muted">
-              {"// 05 INITIATE CONTACT"}
-            </span>
-          </div>
-        </Reveal>
+    <section id="contact" className="py-20 md:py-28 border-b-2 border-ink bg-canvas relative overflow-hidden">
+      <Container>
+        <SectionHeader label="// 05 INITIATE CONTACT" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Main Headline & Interactive Copy Block */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="lg:col-span-8 space-y-10">
             <Reveal yOffset={30}>
-              <h2 className="text-5xl sm:text-7xl md:text-8xl font-bold font-display text-ink uppercase tracking-tighter leading-[0.95]">
+              <h2 className="text-5xl sm:text-7xl md:text-8xl font-black font-display text-ink uppercase tracking-[-0.03em] leading-[0.92]">
                 Start a project. <br />
                 <span className="text-muted">Let&apos;s build something extraordinary.</span>
               </h2>
             </Reveal>
 
-            {/* Interactive Email Copy Block — an elevated surface panel,
-                matching the other cards' move away from the ink-inversion
-                trick now that canvas is dark by default. */}
             <Reveal yOffset={30} delay={0.15}>
-              <div className="border border-hairline bg-surface text-ink p-6 sm:p-8 rounded-2xl space-y-6 shadow-2xl relative overflow-hidden">
-                <div className="flex items-center justify-between font-mono text-xs text-muted border-b border-hairline pb-4">
-                  <span className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-accent" />
+              <div className="border-2 border-ink bg-surface text-ink relative">
+                <div className="flex items-center justify-between font-mono text-xs border-b-2 border-ink px-6 sm:px-8 py-4">
+                  <span className="flex items-center gap-2 font-bold">
+                    <Mail className="w-4 h-4" />
                     <span>DIRECT STUDIO EMAIL</span>
                   </span>
-                  <span className="text-accent">READY</span>
+                  <span className="bg-accent text-on-accent border-2 border-ink px-2 py-0.5 font-bold">
+                    READY
+                  </span>
                 </div>
 
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <span className="font-mono text-xl sm:text-2xl lg:text-3xl font-bold text-ink tracking-tight select-all">
+                <div className="p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <span className="font-mono text-lg sm:text-2xl font-bold text-ink tracking-tight select-all break-all">
                     {profile.email}
                   </span>
 
@@ -67,7 +61,7 @@ export function Contact({ profile, socialLinks }: ContactProps) {
                     <button
                       type="button"
                       onClick={handleCopyEmail}
-                      className="inline-flex items-center gap-2 bg-accent text-on-accent hover:bg-accent/90 font-mono text-xs font-bold uppercase px-5 py-3.5 rounded-full transition-all active:scale-95 touch-target"
+                      className="inline-flex items-center gap-2 bg-accent text-on-accent hover:bg-ink hover:text-canvas border-2 border-ink font-mono text-xs font-bold uppercase px-5 h-12 transition-colors active:translate-y-px touch-target"
                       aria-label="Copy email address"
                     >
                       {copied ? (
@@ -85,21 +79,20 @@ export function Contact({ profile, socialLinks }: ContactProps) {
 
                     <a
                       href={`mailto:${profile.email}`}
-                      className="inline-flex items-center justify-center p-3.5 rounded-full border border-hairline hover:border-ink text-ink transition-all touch-target"
+                      className="inline-flex items-center justify-center w-12 h-12 border-2 border-ink text-ink hover:bg-accent hover:text-on-accent transition-colors touch-target"
                       aria-label="Send email via default client"
                     >
-                      <ArrowUpRight className="w-5 h-5 text-accent" />
+                      <ArrowUpRight className="w-5 h-5" />
                     </a>
                   </div>
                 </div>
 
-                {/* Copied Feedback Toast */}
                 {copied && (
                   <div
-                    className="absolute bottom-3 left-6 font-mono text-[11px] text-accent flex items-center gap-1.5 animate-fade-in"
+                    className="border-t-2 border-ink px-6 sm:px-8 py-3 font-mono text-xs text-ink flex items-center gap-2 animate-fade-in"
                     role="status"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-accent border-2 border-ink" />
                     <span>Email copied to clipboard successfully</span>
                   </div>
                 )}
@@ -107,33 +100,34 @@ export function Contact({ profile, socialLinks }: ContactProps) {
             </Reveal>
           </div>
 
-          {/* Social Links & Availability info */}
-          <div className="lg:col-span-4 space-y-8">
+          {/* Social Links */}
+          <div className="lg:col-span-4">
             <Reveal yOffset={30} delay={0.2}>
-              <div className="border border-hairline bg-surface/70 p-6 sm:p-8 rounded-2xl space-y-6">
-                <h3 className="font-mono text-xs font-semibold uppercase tracking-wider text-muted border-b border-hairline pb-3">
+              <div className="border-2 border-ink bg-surface">
+                <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-ink border-b-2 border-ink px-6 py-4">
                   {"// CONNECT & CHANNELS"}
                 </h3>
 
-                <div className="space-y-3">
+                <ul className="divide-y-2 divide-ink">
                   {socialLinks.map((link) => (
-                    <a
-                      key={link.name}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between font-mono text-sm uppercase text-ink hover:text-muted p-3 rounded-lg border border-hairline bg-canvas hover:bg-surface transition-all group touch-target"
-                    >
-                      <span className="font-semibold">{link.name}</span>
-                      <ArrowUpRight className="w-4 h-4 text-muted group-hover:text-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </a>
+                    <li key={link.name}>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between font-mono text-sm font-bold uppercase text-ink hover:bg-accent hover:text-on-accent px-6 h-14 transition-colors group touch-target"
+                      >
+                        <span>{link.name}</span>
+                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      </a>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </Reveal>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

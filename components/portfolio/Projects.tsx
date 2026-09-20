@@ -1,7 +1,7 @@
-import React from 'react';
-import { Project } from '@/lib/content';
-import { ProjectCard } from './ProjectCard';
-import { Reveal } from '@/components/motion/Reveal';
+import { Project } from "@/lib/content";
+import { ProjectCard } from "./ProjectCard";
+import { Container } from "@/components/portfolio/Container";
+import { SectionHeader } from "@/components/portfolio/SectionHeader";
 
 interface ProjectsProps {
   projects: Project[];
@@ -9,24 +9,13 @@ interface ProjectsProps {
 
 export function Projects({ projects }: ProjectsProps) {
   return (
-    <section id="work" className="py-20 md:py-28 border-b border-hairline bg-canvas">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <Reveal yOffset={20}>
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 pb-6 border-b border-hairline">
-            <div>
-              <span className="font-mono text-xs tracking-widest uppercase text-muted">
-                {"// 01 SELECTED WORK"}
-              </span>
-              <h2 className="text-4xl sm:text-6xl font-bold font-display text-ink uppercase tracking-tighter mt-2">
-                Featured Projects
-              </h2>
-            </div>
-            <p className="font-mono text-xs text-muted mt-4 md:mt-0 max-w-xs">
-              Selected production applications, design systems, and creative technology builds.
-            </p>
-          </div>
-        </Reveal>
+    <section id="work" className="py-20 md:py-28 border-b-2 border-ink bg-canvas">
+      <Container>
+        <SectionHeader
+          label="// 01 SELECTED WORK"
+          title="Featured Projects"
+          blurb="Selected production applications, design systems, and creative technology builds."
+        />
 
         {/*
           Sticky-stacking (act 3). Each card pins under the sticky header and
@@ -51,7 +40,7 @@ export function Projects({ projects }: ProjectsProps) {
             </div>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

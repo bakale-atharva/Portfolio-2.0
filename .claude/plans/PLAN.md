@@ -32,6 +32,8 @@ Git: this lands as `feat:` commits on the current branch. Existing phase history
 
 ## Design direction: **Nocturne Editorial**
 
+> **Superseded (visual layer only).** The look described in this section, its tokens and its type stack, was replaced by the "Exploded View" assembly-manual system. See `DESIGN.md` at the repo root for the current design system. The motion acts, performance budget and dashboard security model below still apply.
+
 You said "surprise me." Here it is — an inversion rather than a replacement, so your identity survives.
 
 **The current paper/ink/lime palette becomes the *light* theme. The default becomes dark**: a warm near-black gallery canvas where `#F3F0E8` flips from background to text and acid lime goes from a timid accent to something that genuinely glows. Same editorial rigor — numbered sections, mono labels, hairline grids — but with cinematic depth and pacing. Sections read as *acts*, not a scroll of blocks.

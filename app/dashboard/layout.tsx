@@ -2,10 +2,10 @@ import type { ReactNode } from "react";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 
 /**
- * The dashboard is dark-only regardless of the visitor's site theme — the
- * Clerk widget is themed to one fixed palette, so letting the surrounding
- * canvas follow light mode would strand a dark card on a paper background.
- * Re-declaring `data-theme` here re-points the tokens for this subtree.
+ * The dashboard follows the site theme (paper by default, night on request).
+ * Clerk's appearance reads the same CSS tokens as the rest of the app, so the
+ * sign-in card re-themes with the surrounding canvas instead of needing a
+ * fixed dark palette.
  */
 export default function DashboardLayout({
   children,
@@ -13,7 +13,7 @@ export default function DashboardLayout({
   children: ReactNode;
 }) {
   return (
-    <div data-theme="dark" className="min-h-screen bg-canvas text-ink">
+    <div className="min-h-screen bg-canvas text-ink">
       <ConvexClientProvider>{children}</ConvexClientProvider>
     </div>
   );

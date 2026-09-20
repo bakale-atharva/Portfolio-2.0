@@ -1,6 +1,6 @@
-import React from 'react';
-import { Metric } from '@/lib/content';
-import { Reveal } from '@/components/motion/Reveal';
+import { Metric } from "@/lib/content";
+import { Reveal } from "@/components/motion/Reveal";
+import { Container } from "@/components/portfolio/Container";
 
 interface ProofRailProps {
   metrics: Metric[];
@@ -8,31 +8,31 @@ interface ProofRailProps {
 
 export function ProofRail({ metrics }: ProofRailProps) {
   return (
-    <section className="border-y border-hairline bg-canvas py-10 md:py-14">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="border-b-2 border-ink bg-surface">
+      <Container>
         <Reveal yOffset={20}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-hairline">
+          <dl className="grid grid-cols-1 md:grid-cols-3 divide-y-2 md:divide-y-0 md:divide-x-2 divide-ink">
             {metrics.map((metric, index) => (
               <div
                 key={metric.label}
-                className={`flex flex-col items-start ${
-                  index !== 0 ? 'pt-6 md:pt-0 md:pl-8' : ''
+                className={`py-6 md:py-8 ${index !== 0 ? "md:pl-8" : ""} ${
+                  index !== metrics.length - 1 ? "md:pr-8" : ""
                 }`}
               >
-                <span className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-ink tracking-tighter">
+                <dt className="font-mono text-xs uppercase tracking-wider text-muted">
+                  {metric.label}
+                </dt>
+                <dd className="font-display text-4xl sm:text-5xl font-black text-ink tracking-[-0.03em] mt-1">
                   {metric.value}
-                </span>
-                <span className="font-mono text-xs uppercase tracking-wider text-ink font-semibold mt-2">
-                  {"// "}{metric.label}
-                </span>
-                <span className="text-xs text-muted font-display mt-1">
+                </dd>
+                <dd className="text-sm text-muted mt-1">
                   {metric.description}
-                </span>
+                </dd>
               </div>
             ))}
-          </div>
+          </dl>
         </Reveal>
-      </div>
+      </Container>
     </section>
   );
 }

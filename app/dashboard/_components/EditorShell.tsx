@@ -32,26 +32,28 @@ export function EditorShell() {
   return (
     <div className="min-h-screen bg-canvas text-ink px-4 sm:px-6 py-8">
       <div className="max-w-4xl mx-auto space-y-6">
-        <div className="flex items-center justify-between font-mono text-xs uppercase tracking-wider text-muted">
+        <div className="flex items-center justify-between font-mono text-xs font-bold uppercase tracking-wider text-ink border-b-2 border-ink pb-4">
           <span>{"// dashboard"}</span>
           <div className="flex items-center gap-3">
             <a
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent underline underline-offset-4"
+              className="underline decoration-2 underline-offset-4 hover:bg-accent hover:text-on-accent px-1 touch-target"
             >
               View live site
             </a>
             <SignOutButton>
-              <button className="border border-hairline px-3 py-1.5 rounded-full hover:bg-surface transition-colors touch-target">
+              <button className="border-2 border-ink px-3 py-1.5 hover:bg-accent hover:text-on-accent transition-colors touch-target">
                 Sign out
               </button>
             </SignOutButton>
           </div>
         </div>
 
-        <h1 className="text-3xl font-display font-bold">Editor</h1>
+        <h1 className="text-5xl font-black font-display uppercase tracking-[-0.03em] leading-none">
+          Editor
+        </h1>
 
         <nav className="flex flex-wrap gap-2">
           {TABS.map((tab) => (

@@ -24,17 +24,17 @@ export function SkillsTicker({ skills, className = '' }: SkillsTickerProps) {
 
   return (
     <div
-      className={`relative w-full overflow-hidden border-y border-hairline bg-ink text-canvas py-5 select-none ${className}`}
+      className={`relative w-full overflow-hidden bg-accent text-on-accent py-5 select-none ${className}`}
       aria-hidden="true"
     >
       {/* Animated track — hidden under reduced motion. */}
-      <div className="ticker-animated marquee-track animate-marquee flex whitespace-nowrap gap-6 w-max cursor-default">
+      <div className="ticker-animated marquee-track animate-marquee flex whitespace-nowrap gap-4 w-max cursor-default">
         {duplicatedSkills.map((skill, idx) => (
           <div
             key={`${skill}-${idx}`}
-            className="inline-flex items-center gap-3 px-5 py-2 text-sm font-mono tracking-wider uppercase bg-white/5 border border-white/10 hover:border-accent hover:text-accent transition-colors rounded-full"
+            className="inline-flex items-center gap-3 px-5 py-2 text-sm font-mono font-bold tracking-wider uppercase border-2 border-ink text-on-accent hover:bg-ink hover:text-canvas transition-colors"
           >
-            <span className="w-2 h-2 rounded-full bg-accent" />
+            <span className="w-2 h-2 bg-ink" />
             <span>{skill}</span>
           </div>
         ))}
@@ -46,9 +46,9 @@ export function SkillsTicker({ skills, className = '' }: SkillsTickerProps) {
         {skills.map((skill) => (
           <span
             key={skill}
-            className="inline-flex items-center px-4 py-2 text-sm font-mono tracking-wider uppercase border border-white/15 bg-white/5 rounded-full"
+            className="inline-flex items-center px-4 py-2 text-sm font-mono font-bold tracking-wider uppercase border-2 border-ink text-on-accent"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-accent mr-2.5" />
+            <span className="w-2 h-2 bg-ink mr-2.5" />
             {skill}
           </span>
         ))}

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Archivo, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import { getPortfolioContent, FALLBACK_SEO } from "@/lib/portfolio";
 import "./globals.css";
 
-// `axes: ["wdth"]` pulls in the width axis alongside the default weight axis —
-// unused until Phase 5's scroll-driven headline stretch, but free to include
-// now and avoids a font re-fetch/layout-shift risk when that lands.
+// `axes: ["wdth"]` pulls in the width axis alongside the weight axis: the hero
+// headline condenses on scroll (act 2), and heavy condensed Archivo is the
+// manual's numeral and heading voice.
 const archivo = Archivo({
   subsets: ["latin"],
   variable: "--font-archivo",
@@ -19,19 +19,10 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-// The one serif accent word in the hero — not a general-purpose font.
-const instrumentSerif = Instrument_Serif({
-  subsets: ["latin"],
-  weight: "400",
-  style: "italic",
-  variable: "--font-serif",
-  display: "swap",
-});
-
 // Runs before first paint so the resolved theme is on <html> with no flash.
-// Dark is the default: only an explicit stored preference or an explicit
-// OS light-mode signal resolves to light.
-const themeScript = `(function(){try{var s=localStorage.getItem("theme");var t=(s==="dark"||s==="light")?s:(window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();`;
+// Light (the paper sheet) is the default: only an explicit stored preference
+// or an explicit OS dark-mode signal resolves to dark.
+const themeScript = `(function(){try{var s=localStorage.getItem("theme");var t=(s==="dark"||s==="light")?s:(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();`;
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getPortfolioContent();
@@ -86,7 +77,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`scroll-smooth ${archivo.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable}`}
+      className={`scroll-smooth ${archivo.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <head>

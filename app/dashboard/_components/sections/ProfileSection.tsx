@@ -167,7 +167,7 @@ function ProfileForm({ doc }: { doc: Doc<"profile"> }) {
             href={doc.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-sans normal-case tracking-normal text-sm text-accent underline underline-offset-4"
+            className="font-display normal-case tracking-normal text-sm text-ink underline decoration-2 underline-offset-4"
           >
             View current résumé
           </a>

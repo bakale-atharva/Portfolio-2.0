@@ -1,5 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect width="32" height="32" rx="4" fill="#11110F"/>
-  <text x="16" y="21" font-family="Space Grotesk, system-ui, sans-serif" font-weight="700" font-size="14" fill="#F3F0E8" text-anchor="middle" letter-spacing="-0.5">AB</text>
-  <circle cx="25" cy="7" r="2.5" fill="#C7FF3D"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Atharva Bakale</title>
+  <rect width="64" height="64" fill="#16181B"/>
+  <!-- guides between the exploded parts -->
+  <g stroke="#F3F3EE" stroke-width="2.5" stroke-dasharray="2 4" fill="none">
+    <line x1="14" y1="24" x2="14" y2="42"/>
+    <line x1="50" y1="24" x2="50" y2="42"/>
+  </g>
+  <g stroke="#F3F3EE" stroke-width="3" stroke-linejoin="round">
+    <!-- lower part, pulled away -->
+    <polygon points="14,42 32,50 32,56 14,48" fill="#16181B"/>
+    <polygon points="32,50 50,42 50,48 32,56" fill="#16181B"/>
+    <polygon points="32,34 50,42 32,50 14,42" fill="#16181B"/>
+    <!-- upper, active part in signal yellow -->
+    <polygon points="14,18 32,26 32,32 14,24" fill="#16181B"/>
+    <polygon points="32,26 50,18 50,24 32,32" fill="#16181B"/>
+    <polygon points="32,10 50,18 32,26 14,18" fill="#FFD21F"/>
+  </g>
 </svg>

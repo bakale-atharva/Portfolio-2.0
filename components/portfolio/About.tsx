@@ -1,7 +1,8 @@
-import React from 'react';
-import { AboutContent, Profile } from '@/lib/content';
-import { Reveal } from '@/components/motion/Reveal';
-import { Download, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
+import { AboutContent, Profile } from "@/lib/content";
+import { Reveal } from "@/components/motion/Reveal";
+import { Container } from "@/components/portfolio/Container";
+import { SectionHeader } from "@/components/portfolio/SectionHeader";
+import { Download, Check, ShieldCheck, Zap } from "lucide-react";
 
 interface AboutProps {
   profile: Profile;
@@ -10,124 +11,115 @@ interface AboutProps {
 
 export function About({ profile, about }: AboutProps) {
   return (
-    <section id="about" className="py-20 md:py-28 border-b border-hairline bg-canvas">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <Reveal yOffset={20}>
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 pb-6 border-b border-hairline">
-            <div>
-              <span className="font-mono text-xs tracking-widest uppercase text-muted">
-                {about.sectionLabel}
-              </span>
-              <h2 className="text-4xl sm:text-6xl font-bold font-display text-ink uppercase tracking-tighter mt-2">
-                {about.heading}
-              </h2>
-            </div>
-            <p className="font-mono text-xs text-muted mt-4 md:mt-0 max-w-xs">
-              {about.intro}
-            </p>
-          </div>
-        </Reveal>
+    <section id="about" className="py-20 md:py-28 border-b-2 border-ink bg-canvas">
+      <Container>
+        <SectionHeader
+          label={about.sectionLabel}
+          title={about.heading}
+          blurb={about.intro}
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Bio & Philosophy */}
-          <div className="lg:col-span-7 space-y-8">
+          <div className="lg:col-span-7 space-y-10">
             <Reveal yOffset={30}>
-              <div className="border border-hairline bg-surface/70 p-8 rounded-2xl space-y-6">
-                <div className="inline-flex items-center gap-2 text-xs font-mono px-3 py-1.5 rounded-full border border-hairline bg-canvas">
-                  <span className="w-2 h-2 rounded-full bg-accent" />
-                  <span className="text-ink font-semibold">{profile.role}</span>
+              <div className="border-2 border-ink bg-surface p-6 sm:p-8 space-y-6">
+                <div className="inline-flex items-center gap-2 text-xs font-mono px-3 py-1.5 border-2 border-ink bg-accent text-on-accent">
+                  <span className="font-bold">{profile.role}</span>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-bold font-display text-ink uppercase tracking-tight leading-snug">
+                <h3 className="text-2xl sm:text-4xl font-black font-display text-ink uppercase tracking-[-0.02em] leading-[1.02]">
                   {about.cardHeading}
                 </h3>
 
-                <p className="text-muted font-display leading-relaxed text-base">
+                <p className="text-muted leading-relaxed text-base max-w-[68ch]">
                   {profile.bio}
                 </p>
 
-                <div className="border-t border-hairline pt-6 font-mono text-xs text-muted space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-ink" />
-                    <span className="font-semibold text-ink">{about.philosophyLabel}</span>
-                    <span>{about.philosophy}</span>
-                  </div>
+                <div className="border-t-2 border-ink pt-5 text-sm text-ink flex items-start gap-3">
+                  <Zap className="w-5 h-5 shrink-0 mt-0.5" />
+                  <p>
+                    <span className="font-bold">{about.philosophyLabel}</span>{" "}
+                    <span className="text-muted">{about.philosophy}</span>
+                  </p>
                 </div>
               </div>
             </Reveal>
 
-            {/* Strengths Grid */}
+            {/* Strengths */}
             <Reveal yOffset={30} delay={0.1}>
               <div className="space-y-4">
-                <h4 className="font-mono text-xs uppercase tracking-wider text-muted font-semibold">
+                <h4 className="font-mono text-xs uppercase tracking-wider text-ink font-bold">
                   {about.strengthsLabel}
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {about.strengths.map((item) => (
-                    <div
+                <ul className="grid grid-cols-1 sm:grid-cols-2 border-2 border-ink divide-y-2 sm:divide-y-0 divide-ink bg-surface">
+                  {about.strengths.map((item, i) => (
+                    <li
                       key={item.title}
-                      className="border border-hairline bg-surface/50 p-5 rounded-xl space-y-2 hover:bg-surface transition-colors"
+                      className={`p-5 space-y-2 ${
+                        i % 2 === 1 ? "sm:border-l-2 sm:border-ink" : ""
+                      } ${i >= 2 ? "sm:border-t-2 sm:border-ink" : ""}`}
                     >
-                      <div className="flex items-center gap-2 font-display font-bold text-sm text-ink uppercase">
-                        <CheckCircle2 className="w-4 h-4 text-accent shrink-0" />
+                      <div className="flex items-start gap-2.5 font-display font-black text-base text-ink uppercase leading-tight">
+                        <span className="w-5 h-5 border-2 border-ink bg-accent flex items-center justify-center shrink-0 mt-px">
+                          <Check className="w-3 h-3 text-on-accent" strokeWidth={3} />
+                        </span>
                         <span>{item.title}</span>
                       </div>
-                      <p className="text-xs text-muted font-display leading-relaxed">
+                      <p className="text-sm text-muted leading-relaxed">
                         {item.description}
                       </p>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </Reveal>
           </div>
 
-          {/* Right Column: Status Card & Resume CTA — an elevated surface
-              panel, not the old always-black card: canvas is already dark
-              by default now, so bg-surface reads as raised without needing
-              the ink-inversion trick. */}
+          {/* Right Column: status sheet & resume CTA. */}
           <div className="lg:col-span-5">
             <Reveal yOffset={40} delay={0.2}>
-              <div className="border border-hairline bg-surface text-ink p-8 rounded-2xl space-y-8 shadow-xl">
-                <div className="flex items-center justify-between border-b border-hairline pb-6">
-                  <span className="font-mono text-xs uppercase tracking-widest text-muted">
+              <div className="border-2 border-ink bg-surface text-ink">
+                <div className="flex items-center justify-between border-b-2 border-ink px-6 sm:px-8 py-4">
+                  <span className="font-mono text-xs uppercase tracking-widest text-ink font-bold">
                     {about.statusLabel}
                   </span>
-                  <ShieldCheck className="w-5 h-5 text-accent" />
+                  <ShieldCheck className="w-5 h-5" />
                 </div>
 
-                <div className="space-y-4">
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-accent font-mono text-xs font-semibold">
-                    <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                    <span>{profile.availability}</span>
+                <div className="p-6 sm:p-8 space-y-8">
+                  <div className="space-y-4">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 border-2 border-ink bg-accent text-on-accent font-mono text-xs font-bold">
+                      <span className="w-2.5 h-2.5 rounded-full bg-ink" />
+                      <span>{profile.availability}</span>
+                    </div>
+
+                    <p className="text-base text-muted leading-relaxed">
+                      {about.availabilityNote}
+                    </p>
                   </div>
 
-                  <p className="text-sm font-display text-muted leading-relaxed">
-                    {about.availabilityNote}
-                  </p>
-                </div>
+                  <div className="pt-6 border-t-2 border-ink space-y-4">
+                    <a
+                      href={profile.resumeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-3 bg-ink text-canvas hover:bg-accent hover:text-on-accent border-2 border-ink font-mono text-xs font-bold uppercase h-14 px-6 transition-colors active:translate-y-px touch-target"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span>{about.resumeCtaLabel}</span>
+                    </a>
 
-                <div className="pt-6 border-t border-hairline space-y-4">
-                  <a
-                    href={profile.resumeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-3 bg-accent text-on-accent hover:bg-accent/90 font-mono text-xs font-bold uppercase py-4 px-6 rounded-full transition-all active:scale-95 touch-target shadow-lg"
-                  >
-                    <Download className="w-4 h-4" />
-                    <span>{about.resumeCtaLabel}</span>
-                  </a>
-
-                  <p className="text-[11px] font-mono text-center text-muted">
-                    {about.resumeNote}
-                  </p>
+                    <p className="text-xs font-mono text-center text-muted">
+                      {about.resumeNote}
+                    </p>
+                  </div>
                 </div>
               </div>
             </Reveal>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
