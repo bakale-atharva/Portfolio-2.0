@@ -38,5 +38,8 @@ playwright/.cache
 .DS_Store
 Thumbs.db
 
-# Agents
+# Agents & Skill Deps
 .agents/*
+.impeccable/*
+PRODUCT.md
+DESIGN.md

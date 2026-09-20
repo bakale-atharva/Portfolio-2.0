@@ -146,7 +146,7 @@ export const seedPortfolio = internalMutation({
 
     const metrics = [
       {
-        value: "24+",
+        value: "2+",
         label: "Projects Shipped",
         description: "Production web apps and systems",
       },
