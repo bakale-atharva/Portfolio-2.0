@@ -95,7 +95,7 @@ export function SaveStatus({ state }: { state: SaveState }) {
   if (state === "idle") return null;
   const label =
     state === "saving" ? "Saving…" : state === "saved" ? "Saved" : "Failed to save";
-  // Yellow is a fill in this system, never text: "saved" gets a yellow chip.
+  // Coral is a fill in this system, never text: "saved" gets a coral chip.
   const tone =
     state === "error"
       ? "text-danger"

@@ -20,7 +20,7 @@ export function ConvexClientProvider({ children }: { children: ReactNode }) {
     <ClerkProvider
       appearance={{
         variables: {
-          // Ink, not yellow: Clerk also uses the primary colour for links, and
+          // Ink, not coral: Clerk also uses the primary colour for links, and
           // the accent is a fill in this system, never text.
           colorPrimary: "var(--ink)",
           colorPrimaryForeground: "var(--canvas)",

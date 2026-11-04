@@ -47,29 +47,30 @@
 
 /* Light is the default: the manual is a printed sheet read in daylight at a
    desk. The night sheet is [data-theme="dark"] (and the OS preference for
-   visitors with no JS). Accent yellow is a fill, never text, so its
-   foreground is always graphite. */
+   visitors with no JS). Accent coral is a fill, never text, so its
+   foreground is always charcoal (5.3:1). Steel gray tints the paper and is
+   the muted tone; on the light sheet it is darkened to stay readable. */
 :root {
-  --canvas: #f3f3ee;
-  --surface: #fbfbf8;
-  --ink: #16181b;
-  --muted: #565a5e;
-  --accent: #ffd21f;
-  --on-accent: #16181b;
-  --hairline: rgba(22, 24, 27, 0.55);
-  --rule: rgba(22, 24, 27, 0.16);
-  --danger: #b3261e;
+  --canvas: #edeff1;
+  --surface: #f7f8f9;
+  --ink: #17191c;
+  --muted: #59636c;
+  --accent: #ff4b32;
+  --on-accent: #17191c;
+  --hairline: rgba(23, 25, 28, 0.55);
+  --rule: rgba(23, 25, 28, 0.16);
+  --danger: #b42318;
   color-scheme: light;
 }
 
 [data-theme="dark"] {
-  --canvas: #131517;
-  --surface: #1b1e21;
-  --ink: #f1f1ea;
-  --muted: #a5a8a2;
-  --hairline: rgba(241, 241, 234, 0.55);
-  --rule: rgba(241, 241, 234, 0.16);
-  --danger: #ff8a80;
+  --canvas: #17191c;
+  --surface: #1f2327;
+  --ink: #eceef0;
+  --muted: #929da7;
+  --hairline: rgba(236, 238, 240, 0.55);
+  --rule: rgba(236, 238, 240, 0.16);
+  --danger: #ff9c91;
   color-scheme: dark;
 }
 
@@ -77,13 +78,13 @@
    present and this block is inert. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --canvas: #131517;
-    --surface: #1b1e21;
-    --ink: #f1f1ea;
-    --muted: #a5a8a2;
-    --hairline: rgba(241, 241, 234, 0.55);
-    --rule: rgba(241, 241, 234, 0.16);
-    --danger: #ff8a80;
+    --canvas: #17191c;
+    --surface: #1f2327;
+    --ink: #eceef0;
+    --muted: #929da7;
+    --hairline: rgba(236, 238, 240, 0.55);
+    --rule: rgba(236, 238, 240, 0.16);
+    --danger: #ff9c91;
     color-scheme: dark;
   }
 }
@@ -155,7 +156,7 @@ code {
   font-variant-numeric: tabular-nums;
 }
 
-/* Browser surfaces, drawn from the palette: selection is the yellow part
+/* Browser surfaces, drawn from the palette: selection is the coral part
    highlight, scrollbars are thin ruled lines. */
 ::selection {
   background: var(--accent);
@@ -167,8 +168,8 @@ code {
   scrollbar-color: var(--ink) var(--canvas);
 }
 
-/* Focus ring: a graphite line with a yellow halo, readable on paper, on
-   yellow fills, and on the night sheet. */
+/* Focus ring: a charcoal line with a coral halo, readable on paper, on
+   coral fills, and on the night sheet. */
 :focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
@@ -198,7 +199,7 @@ code {
   line-height: 1;
 }
 
-/* The accent word in the hero: a yellow part highlight, not coloured text. */
+/* The accent word in the hero: a coral part highlight, not coloured text. */
 .mark-block {
   background: var(--accent);
   color: var(--on-accent);
@@ -488,13 +489,13 @@ code {
     pointer-events: none;
     z-index: 80;
     opacity: 0;
-    /* Only `scale` transitions — position is driven per-frame by transform
+    /* Only `scale` transitions — position is driven per-frame by `translate`
        in a rAF loop and must not be eased twice. */
     transition:
       scale 180ms ease-out,
       opacity 180ms ease-out,
       background-color 180ms ease-out;
-    will-change: transform;
+    will-change: translate;
   }
 
   .cursor-dot[data-visible="true"] {

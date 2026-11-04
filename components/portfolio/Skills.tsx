@@ -77,7 +77,7 @@ export function Skills({ skillGroups }: SkillsProps) {
         </div>
       </Container>
 
-      {/* Kinetic ticker band: the page's one full-yellow moment, a rhythm
+      {/* Kinetic ticker band: the page's one full-coral moment, a rhythm
           break between the parts list and the About sheet. */}
       <Reveal yOffset={20}>
         <SkillsTicker skills={allSkills} className="border-t-2 border-ink" />

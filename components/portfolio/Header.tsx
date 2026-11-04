@@ -24,7 +24,7 @@ export function Header({ profile }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 bg-canvas border-b-2 border-ink">
       <Container className="h-20 flex items-center justify-between">
-        {/* Monogram: a boxed part number with the yellow active-part dot. */}
+        {/* Monogram: a boxed part number with the coral active-part dot. */}
         <a
           href="#top"
           className="inline-flex items-center gap-2.5 border-2 border-ink px-3 h-11 font-black text-xl tracking-tight text-ink hover:bg-accent hover:text-on-accent transition-colors touch-target"

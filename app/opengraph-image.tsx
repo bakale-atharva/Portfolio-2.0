@@ -12,10 +12,10 @@ export const size = {
 export const contentType = 'image/png';
 
 // Satori cannot read CSS variables, so the Exploded View palette (see
-// globals.css :root) is mirrored here as constants: paper, graphite, signal.
-const PAPER = '#F3F3EE';
-const INK = '#16181B';
-const SIGNAL = '#FFD21F';
+// globals.css :root) is mirrored here as constants: paper, charcoal, coral accent.
+const PAPER = '#EDEFF1';
+const INK = '#17191C';
+const ACCENT = '#FF4B32';
 
 export default async function Image() {
   const content = await getPortfolioContent();
@@ -32,7 +32,7 @@ export default async function Image() {
     (
       <div
         style={{
-          background: SIGNAL,
+          background: ACCENT,
           width: '100%',
           height: '100%',
           display: 'flex',

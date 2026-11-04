@@ -1,19 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <title>Atharva Bakale</title>
-  <rect width="64" height="64" fill="#16181B"/>
+  <rect width="64" height="64" fill="#17191C"/>
   <!-- guides between the exploded parts -->
-  <g stroke="#F3F3EE" stroke-width="2.5" stroke-dasharray="2 4" fill="none">
+  <g stroke="#EDEFF1" stroke-width="2.5" stroke-dasharray="2 4" fill="none">
     <line x1="14" y1="24" x2="14" y2="42"/>
     <line x1="50" y1="24" x2="50" y2="42"/>
   </g>
-  <g stroke="#F3F3EE" stroke-width="3" stroke-linejoin="round">
+  <g stroke="#EDEFF1" stroke-width="3" stroke-linejoin="round">
     <!-- lower part, pulled away -->
-    <polygon points="14,42 32,50 32,56 14,48" fill="#16181B"/>
-    <polygon points="32,50 50,42 50,48 32,56" fill="#16181B"/>
-    <polygon points="32,34 50,42 32,50 14,42" fill="#16181B"/>
-    <!-- upper, active part in signal yellow -->
-    <polygon points="14,18 32,26 32,32 14,24" fill="#16181B"/>
-    <polygon points="32,26 50,18 50,24 32,32" fill="#16181B"/>
-    <polygon points="32,10 50,18 32,26 14,18" fill="#FFD21F"/>
+    <polygon points="14,42 32,50 32,56 14,48" fill="#17191C"/>
+    <polygon points="32,50 50,42 50,48 32,56" fill="#17191C"/>
+    <polygon points="32,34 50,42 32,50 14,42" fill="#17191C"/>
+    <!-- upper, active part in signal coral -->
+    <polygon points="14,18 32,26 32,32 14,24" fill="#17191C"/>
+    <polygon points="32,26 50,18 50,24 32,32" fill="#17191C"/>
+    <polygon points="32,10 50,18 32,26 14,18" fill="#FF4B32"/>
   </g>
 </svg>
