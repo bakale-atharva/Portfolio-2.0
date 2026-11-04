@@ -142,7 +142,7 @@ function AboutForm({ doc }: { doc: Doc<"about"> }) {
         />
         {form.strengths.map((strength, i) => (
           <div key={i} className="flex items-start gap-2">
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 min-w-0 flex flex-col gap-2">
               <TextInput
                 placeholder="Title"
                 value={strength.title}

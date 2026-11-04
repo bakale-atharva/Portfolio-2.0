@@ -132,7 +132,7 @@ function ServiceRow({
 
   return (
     <div className="flex items-start gap-2 border border-hairline rounded-md p-3">
-      <div className="flex-1 space-y-2">
+      <div className="flex-1 min-w-0 flex flex-col gap-2">
         <div className="flex gap-2">
           <TextInput
             placeholder="ID (e.g. 01)"
