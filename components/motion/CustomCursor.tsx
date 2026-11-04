@@ -64,7 +64,11 @@ export function CustomCursor() {
       // what makes it read as a physical object rather than a repainted cursor.
       currentX += (targetX - currentX) * 0.18;
       currentY += (targetY - currentY) * 0.18;
-      dot.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+      // Use the individual `translate` property, not `transform`: CSS applies
+      // `translate`, then `scale`, then `transform`. Putting the position in
+      // `transform` would let the hover `scale` multiply the pointer
+      // coordinates and throw the dot away from the cursor.
+      dot.style.translate = `${currentX}px ${currentY}px`;
       frame = requestAnimationFrame(tick);
     };
 
